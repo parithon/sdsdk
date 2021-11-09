@@ -14,6 +14,7 @@ namespace Parithon.StreamDeck.SDK.Targets
     protected override string ToolName => "sdgenman";
 
     protected override MessageImportance StandardOutputLoggingImportance => MessageImportance.High;
+    protected override MessageImportance StandardErrorLoggingImportance => MessageImportance.High;
 
     protected override string GenerateFullPathToTool()
     {

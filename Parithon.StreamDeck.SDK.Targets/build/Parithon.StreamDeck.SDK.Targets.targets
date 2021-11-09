@@ -2,13 +2,13 @@
 <Project>
 
   <PropertyGroup>
-    <_ToolCommand Condition=" !($([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 'v4.0.0')) And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), 'v5.0.0'))) ">$(MSBuildThisFileDirectory)../tools/netcoreapp3.1/sdgenman.dll</_ToolCommand>
-    <_ToolCommand Condition=" $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 'v4.0.0')) And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), 'v5.0.0')) ">$(MSBuildThisFileDirectory)../tools/net472/sdgenman.exe</_ToolCommand>
+    <_ToolCommand>$(MSBuildThisFileDirectory)../lib/net6.0/sdgenman.dll</_ToolCommand>
+    <_ToolCommand Condition=" $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), 'v4.0.0')) ">$(MSBuildThisFileDirectory)../lib/netcoreapp3.1/sdgenman.dll</_ToolCommand>
+    <_ToolCommand Condition=" $([MSBuild]::VersionGreaterThanOrEquals($(TargetFrameworkVersion), 'v4.0.0')) And $([MSBuild]::VersionLessThan($(TargetFrameworkVersion), 'v5.0.0')) ">$(MSBuildThisFileDirectory)../lib/net472/sdgenman.exe</_ToolCommand>
     <_ToolCommand>$([MSBuild]::NormalizePath($(_ToolCommand)))</_ToolCommand>
   </PropertyGroup>
 
   <Target Name="GenerateStreamDeckManifest" AfterTargets="Build">
-    <Message Importance="high" Text="_ToolCommand: $(_ToolCommand)" />
     <GenerateStreamDeckManifestToolTask Command="$(_ToolCommand)" TargetPath="$(TargetPath)" />
   </Target>
 
