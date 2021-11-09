@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <Import Project="version.props"/>
+  <PropertyGroup>
+    <Title>Parithon's StreamDeck SDK</Title>
+    <AssemblyName>$(MSBuildProjectName)</AssemblyName>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Authors>Anthony Conrad</Authors>
+    <Copyright>Copyright © $(Authors)</Copyright>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GitRepository>parithon/sdsdk</GitRepository>
+    <PackageOutputPath>$(MSBuildThisFileDirectory)artifacts</PackageOutputPath>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/$(GitRepository)</PackageProjectUrl>
+    <PackageIconUrl>$(PackageProjectUrl)/images/icon.png</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
+    <GenerateFullPaths Condition="'$(VSCODE_PID)' != ''">true</GenerateFullPaths>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="/" />
+    <None Include="$(MSBuildThisFileDirectory)images\icon.png" Pack="true" PackagePath="/" />
+  </ItemGroup>
+</Project>

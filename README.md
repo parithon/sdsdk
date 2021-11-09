@@ -1,1 +1,1 @@
-# Stream Deck SDK
+# Parithon's StreamDeck SDK
