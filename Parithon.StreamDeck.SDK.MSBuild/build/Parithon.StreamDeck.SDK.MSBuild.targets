@@ -3,11 +3,12 @@
 <Project>
 
   <PropertyGroup>
-    <_BuildAssembly>$(MSBuildThisFileDirectory)sdsdkbuildtool.dll</_BuildAssembly>
+    <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' == 'Core' ">dotnet $(MSBuildThisFileDirectory)sdsdkbuildtool.dll</_BuildAssembly>
+    <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' != 'Core' ">$(MSBuildThisFileDirectory)sdsdkbuildtool.exe</_BuildAssembly>
   </PropertyGroup>
   
   <Target Name="GenerateStreamDeckManifest" AfterTargets="Build">
-    <Exec Command='dotnet "$(_BuildAssembly)" "$(TargetPath)"' />
+    <Exec Command='"$(_BuildAssembly)" "$(TargetPath)"' />
   </Target>
 
   <Target Name="ClientStreamDeckManifest" AfterTargets="Clean">
