@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<!--<Project TreatAsLocalProperty="">-->
-<Project>
+<Project TreatAsLocalProperty="_BuildAssembly">
+<!--<Project>-->
 
   <PropertyGroup>
-    <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' == 'Core' ">dotnet $(MSBuildThisFileDirectory)sdsdkbuildtool.dll</_BuildAssembly>
-    <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' != 'Core' ">$(MSBuildThisFileDirectory)sdsdkbuildtool.exe</_BuildAssembly>
+    <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' == 'Core' ">dotnet "$(MSBuildThisFileDirectory)sdsdkbuildtool.dll"</_BuildAssembly>
+    <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' != 'Core' ">"$(MSBuildThisFileDirectory)sdsdkbuildtool.exe"</_BuildAssembly>
   </PropertyGroup>
   
   <Target Name="GenerateStreamDeckManifest" AfterTargets="Build">
-    <Exec Command='"$(_BuildAssembly)" "$(TargetPath)"' />
+    <Exec Command='$(_BuildAssembly) "$(TargetPath)"' />
   </Target>
 
   <Target Name="ClientStreamDeckManifest" AfterTargets="Clean">
