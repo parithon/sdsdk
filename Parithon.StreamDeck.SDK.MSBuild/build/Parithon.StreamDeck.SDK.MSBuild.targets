@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--<Project TreatAsLocalProperty="">-->
+<Project>
+
+  <PropertyGroup>
+    <_BuildAssembly>$(MSBuildThisFileDirectory)sdsdkbuildtool.dll</_BuildAssembly>
+  </PropertyGroup>
+  
+  <Target Name="GenerateStreamDeckManifest" AfterTargets="Build">
+    <Exec Command='dotnet "$(_BuildAssembly)" "$(TargetPath)"' />
+  </Target>
+
+  <Target Name="ClientStreamDeckManifest" AfterTargets="Clean">
+    <Delete Files="$(OutDir)\manifest.json" />
+  </Target>
+
+</Project>

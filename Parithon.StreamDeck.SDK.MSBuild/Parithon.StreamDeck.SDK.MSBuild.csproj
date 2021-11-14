@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <!-- Suppresses the warnings about the package not having assemblies in lib/*/.dll.-->
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+    <!-- Change the default location where NuGet will put the build output -->
+    <BuildOutputTargetFolder>tools</BuildOutputTargetFolder>
+    <AssemblyName>sdsdkbuild</AssemblyName>
+    <PackageId>$(MSBuildProjectName)</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\Parithon.StreamDeck.SDK.MSBuild.Tool\bin\$(Configuration)\net6.0\**" PackagePath="build\">
+      <Link>lib\%(RecursiveDir)%(FileName)%(Extension)</Link>
+    </Content>
+    <Content Include="build\*" PackagePath="build\" />
+  </ItemGroup>
+
+</Project>
