@@ -11,10 +11,11 @@ string manifestJSON = JsonSerializer.Serialize(manifest, new JsonSerializerOptio
   WriteIndented = true
 });
 
-Console.WriteLine(manifestJSON);
-
-string? targetPath = Path.GetDirectoryName(args[0]);
+var targetPath = Path.GetDirectoryName(args[0]);
 if (targetPath == null) return;
 
-File.WriteAllText(Path.Combine(targetPath, "manifest.json"), manifestJSON);
+var filepath = Path.Combine(targetPath, "manifest.json");
 
+Console.WriteLine($"Generated manifest -> {filepath}");
+
+File.WriteAllText(filepath, manifestJSON);

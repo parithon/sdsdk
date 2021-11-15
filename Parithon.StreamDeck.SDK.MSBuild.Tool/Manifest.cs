@@ -1,15 +1,43 @@
 ﻿using System.Reflection;
 using Parithon.StreamDeck.SDK;
+using Parithon.StreamDeck.SDK.Core;
 
 internal class Manifest
 {
   public Manifest(Assembly assembly)
   {
-    this.Icon = assembly.GetCustomAttribute<AssemblyStreamDeckIconAttribute>()?.Icon ?? "Unknown";
+    var streamDeckAttribute = assembly.GetCustomAttribute<AssemblyStreamDeckAttribute>();
+    var types = assembly.GetTypes().Where(t => t.IsClass && t.IsSubclassOf(typeof(StreamDeckAction)));
+    this.Actions = new List<dynamic>();
+    foreach (var type in types)
+    {
+      var action = Activator.CreateInstance(type);
+      this.Actions.Add(action);
+    }
+    this.Author = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
+    this.Category = streamDeckAttribute?.Category;
+    this.CategoryIcon = streamDeckAttribute?.CategoryIcon;
+    this.CodePath = $"{assembly.GetName().Name}.exe";
+    this.CodePathMac = streamDeckAttribute?.CodePathMac;
+    this.CodePathWin = streamDeckAttribute?.CodePathWin;
+    this.Description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description;
+    this.Icon = streamDeckAttribute?.Icon;
+    this.Name = assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product;
+    this.Profiles = null;
+    this.PropertyInspectorPath = streamDeckAttribute?.PropertyInspectorPath;
+    this.DefaultWindowSize = null;
+    this.URL = streamDeckAttribute?.URL;
+    this.Version = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+    this.SDKVersion = "2";
     this.OS = GetOS(assembly.GetCustomAttributes<AssemblyStreamDeckOSAttribute>());
+    this.Software = new
+    {
+      MinimumVersion = "4.1"
+    };
+    this.ApplicationsToMonitor = null;
   }
 
-  private IEnumerable<dynamic> GetOS(IEnumerable<AssemblyStreamDeckOSAttribute> osattribs)
+  private static IEnumerable<dynamic> GetOS(IEnumerable<AssemblyStreamDeckOSAttribute> osattribs)
   {
     if (!osattribs.Any())
     {
@@ -22,7 +50,23 @@ internal class Manifest
     }
   }
 
-  public ICollection<dynamic> Actions { get; private set; } = new List<dynamic>();
+  public ICollection<dynamic> Actions { get; private set; }
+  public string Author { get; private set; }
+  public string Category { get; private set; }
+  public string CategoryIcon { get; private set; }
+  public string CodePath { get; private set; }
+  public string CodePathMac { get; private set; }
+  public string CodePathWin { get; private set; }
+  public string Description { get; private set; }
   public string Icon { get; private set; }
-  public IEnumerable<dynamic> OS { get; private set; } = new List<dynamic>();
+  public string Name { get; private set; }
+  public ICollection<dynamic> Profiles { get; private set; }
+  public string PropertyInspectorPath { get; private set; }
+  public dynamic DefaultWindowSize { get; private set; }
+  public string URL { get; private set; }
+  public string Version { get; private set; }
+  public string SDKVersion { get; private set; }
+  public IEnumerable<dynamic> OS { get; private set; }
+  public dynamic Software { get; private set; }
+  public ICollection<string> ApplicationsToMonitor { get; private set; }
 }

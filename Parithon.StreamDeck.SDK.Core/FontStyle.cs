@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Parithon.StreamDeck.SDK.Core
 {
-  public interface IStreamDeckAction
+  public enum FontStyle
   {
+    Regular,
+    Bold,
+    Italic,
+    BoldItalic
   }
 }

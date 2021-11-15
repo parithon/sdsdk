@@ -18,6 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\
 	ProjectSection(ProjectDependencies) = postProject
 		{7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B} = {7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B}
 		{1D01C134-8E61-4867-B9DD-E84B3524A82A} = {1D01C134-8E61-4867-B9DD-E84B3524A82A}
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893} = {54C7F5E3-78EE-476B-A7D9-25AFDA85D893}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.Core", "Parithon.StreamDeck.SDK.Core\Parithon.StreamDeck.SDK.Core.csproj", "{1D01C134-8E61-4867-B9DD-E84B3524A82A}"
@@ -28,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.MSB
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.MSBuild.Tool", "Parithon.StreamDeck.SDK.MSBuild.Tool\Parithon.StreamDeck.SDK.MSBuild.Tool.csproj", "{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK", "Parithon.StreamDeck.SDK\Parithon.StreamDeck.SDK.csproj", "{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +54,10 @@ Global
 		{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
