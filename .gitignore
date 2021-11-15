@@ -32,6 +32,7 @@ bld/
 [Ll]og/
 [Ll]ogs/
 [Pp]ackages/*
+nupkgs/*
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -458,4 +459,4 @@ $RECYCLE.BIN/
 ## Explicit allowed files
 ##
 !packages/README.md
-!artifacts/README.md
+!nupkgs/README.md

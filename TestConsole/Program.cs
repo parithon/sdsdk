@@ -1,4 +1,5 @@
 ﻿using System;
+using Parithon.StreamDeck.SDK;
 
 namespace TestConsole
 {
@@ -6,7 +7,8 @@ namespace TestConsole
   {
     static void Main(string[] args)
     {
-      Console.WriteLine("Hello World!");
+      var client = new StreamDeckClientBuilder(args)
+        .Build();
     }
   }
 }

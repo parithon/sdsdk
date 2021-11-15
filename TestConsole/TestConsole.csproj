@@ -2,18 +2,26 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Parithon.StreamDeck.SDK.Targets" Version="1.0.0-build-*" />
+    <PackageReference Include="Parithon.StreamDeck.SDK.Core" Version="1.0.0-build-*" />
+    <PackageReference Include="Parithon.StreamDeck.SDK.MSBuild" Version="1.0.0-build-*" />
+    <PackageReference Include="Parithon.StreamDeck.SDK" Version="1.0.0-build-*" />
   </ItemGroup>
 
   <ItemGroup>
-    <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckIconAttribute" Icon="Images/virt_cam_on" />
+    <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckAttribute" Icon="Images/virt_cam_on" Category="Testing" />
     <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckOSAttribute" Platform="windows" MinimumVersion="10" />
     <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckOSAttribute" Platform="mac" MinimumVersion="10.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
