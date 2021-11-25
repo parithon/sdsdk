@@ -5,6 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2C700071-07C8-4703-B05A-DC39D39EBB9B}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
@@ -13,7 +14,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		version.props = version.props
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.Targets", "Parithon.StreamDeck.SDK.Targets\Parithon.StreamDeck.SDK.Targets.csproj", "{8496D544-CA61-4B6D-8E0B-22950CFCFDE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.Core", "Parithon.StreamDeck.SDK.Core\Parithon.StreamDeck.SDK.Core.csproj", "{1D01C134-8E61-4867-B9DD-E84B3524A82A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.MSBuild", "Parithon.StreamDeck.SDK.MSBuild\Parithon.StreamDeck.SDK.MSBuild.csproj", "{7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9} = {4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.MSBuild.Tool", "Parithon.StreamDeck.SDK.MSBuild.Tool\Parithon.StreamDeck.SDK.MSBuild.Tool.csproj", "{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK", "Parithon.StreamDeck.SDK\Parithon.StreamDeck.SDK.csproj", "{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.TestConsole", "Parithon.StreamDeck.SDK.TestConsole\Parithon.StreamDeck.SDK.TestConsole.csproj", "{C620F124-180C-4BB8-BE98-4A6EC4D92499}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B} = {7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B}
+		{1D01C134-8E61-4867-B9DD-E84B3524A82A} = {1D01C134-8E61-4867-B9DD-E84B3524A82A}
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893} = {54C7F5E3-78EE-476B-A7D9-25AFDA85D893}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,10 +38,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{8496D544-CA61-4B6D-8E0B-22950CFCFDE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8496D544-CA61-4B6D-8E0B-22950CFCFDE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8496D544-CA61-4B6D-8E0B-22950CFCFDE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8496D544-CA61-4B6D-8E0B-22950CFCFDE6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D01C134-8E61-4867-B9DD-E84B3524A82A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D01C134-8E61-4867-B9DD-E84B3524A82A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D01C134-8E61-4867-B9DD-E84B3524A82A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D01C134-8E61-4867-B9DD-E84B3524A82A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AFA9955-2929-46C9-8FB3-8B8114B5F3B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C620F124-180C-4BB8-BE98-4A6EC4D92499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C620F124-180C-4BB8-BE98-4A6EC4D92499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C620F124-180C-4BB8-BE98-4A6EC4D92499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C620F124-180C-4BB8-BE98-4A6EC4D92499}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
