@@ -9,13 +9,7 @@
     "^refs/tags/v\\d+\\.\\d+"
   ],
   "cloudBuild": {
-    "setVersionVariables": true,
-    "buildNumber": {
-      "enabled": true,
-      "includeCommitId": {
-        "where": "fourthVersionComponent"
-      }
-    }
+    "setVersionVariables": false
   },
   "release": {
     "versionIncrement": "minor"

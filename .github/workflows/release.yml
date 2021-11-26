@@ -1,0 +1,55 @@
+name: Create Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  build:
+
+  runs-on: ubuntu-latest
+
+  steps:
+  - uses: actions/checkout@v2
+    with:
+      fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+  
+  - name: Setup .NET
+    uses: actions/setup-dotnet@v1
+    with:
+      dotnet-version: 6.0.x
+  
+  - name: Set build variables
+    shell: pwsh
+    run: |
+      dotnet tool install --tool-path . nbgv
+      .\nbgv cloud
+
+  - name: Gather build version
+    shell: pwsh
+    run: |
+      Write-Output 
+
+  - name: Build
+    env:
+      COPY_TO_SD: false
+    shell: pwsh
+    run: |
+      .\build.ps1 -Release
+  
+  - uses: actions/create-release@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      tag_name: ${{ github.ref }}
+      release_name: Release ${{ github.ref }}
+      draft: true
+      prerelease: true
+
+  - uses: actions/upload-release-asset@v1
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    with:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      asset_path: ./nupkgs/*.nupkg
