@@ -19,7 +19,7 @@
     <RemoveDir Directories="$(_SDPluginFolder)" />
   </Target>
 
-  <Target Name="CopyOutputToSDPluginFolder" DependsOnTargets="Build" AfterTargets="GenerateStreamDeckManifest" Condition=" '$(BuildToSDPluginFolder)' == true ">
+  <Target Name="CopyOutputToSDPluginFolder" DependsOnTargets="Build" AfterTargets="GenerateStreamDeckManifest" Condition=" '$(BuildToSDPluginFolder)' == true and '$(COPY_TO_SD)' == '' ">
     <ItemGroup>
       <_OutputFiles Include="$(OutDir)\**\*" />
     </ItemGroup>
