@@ -3,17 +3,17 @@
   <PropertyGroup>
     <Title>Parithon's StreamDeck SDK</Title>
     <AssemblyName>$(MSBuildProjectName)</AssemblyName>
-    <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GitRepository>parithon/sdsdk</GitRepository>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup>
     <Authors>Anthony Conrad</Authors>
     <Copyright>Copyright © $(Authors)</Copyright>
     <GenerateFullPaths Condition="'$(VSCODE_PID)' != ''">true</GenerateFullPaths>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GitRepository>parithon/sdsdk</GitRepository>
+    <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup>
     <PackageOutputPath>$(MSBuildThisFileDirectory)nupkgs</PackageOutputPath>
@@ -22,7 +22,7 @@
     <PackageProjectUrl>https://github.com/$(GitRepository)</PackageProjectUrl>
     <PackageIconUrl>$(PackageProjectUrl)/images/icon.png</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Debug' ">true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
