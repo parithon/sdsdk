@@ -15,7 +15,7 @@ internal class Manifest
     }
     var os = GetOS(assembly.GetCustomAttributes<AssemblyStreamDeckOSAttribute>());
     var versionStr = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0";    ;
-    var version = new Version(versionStr.Substring(0, versionStr.IndexOf('-')));
+    var version = new Version(versionStr);
     this.Author = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
     this.Category = streamDeckAttribute?.Category;
     this.CategoryIcon = streamDeckAttribute?.CategoryIcon ?? streamDeckAttribute?.Icon;
