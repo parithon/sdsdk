@@ -11,8 +11,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Parithon.StreamDeck.SDK.Core" Version="*-*" />
     <PackageReference Include="Parithon.StreamDeck.SDK.MSBuild" Version="*-*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Parithon.StreamDeck.SDK\Parithon.StreamDeck.SDK.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,10 +28,6 @@
     <Content Include="Images\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Parithon.StreamDeck.SDK\Parithon.StreamDeck.SDK.csproj" />
   </ItemGroup>
 
 </Project>
