@@ -40,6 +40,13 @@ jobs:
       run: |
         .\build.ps1 -Release
 
+    - name: Pack
+      shell: pwsh
+      run: |
+        dotnet pack --configuration Release --no-build .\Parithon.StreamDeck.SDK.Core
+        dotnet pack --configuration Release --no-build .\Parithon.StreamDeck.SDK
+        dotnet pack --configuration Release --no-build .\Parithon.StreamDeck.SDK.MSBuild
+
     - uses: actions/create-release@v1
       id: create_release
       env:
