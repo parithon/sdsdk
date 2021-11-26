@@ -50,10 +50,17 @@ jobs:
         draft: true
         prerelease: true
 
-    - uses: actions/upload-release-asset@v1
-      id: upload-release-assets
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - uses: actions/upload-release-asset@v1
+    #   id: upload-release-assets
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     upload_url: ${{ steps.create_release.outputs.upload_url }}
+    #     asset_path: ./nupkgs/*.nupkg
+    #     asset_name: *.nupkg
+
+    - name: Upload Release Assets
+      uses: NBTX/upload-release-assets@v1
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./nupkgs/*.nupkg
+        targets: ./nupkgs/*./nupkg
