@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "StreamDeck-Integration": {
+      "commandName": "Executable",
+      "executablePath": "$(ProgramFiles)\\Elgato\\StreamDeck\\StreamDeck.exe"
+    }
+  }
+}

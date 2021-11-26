@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project TreatAsLocalProperty="_BuildAssembly;_DistributionTool;_OutputFiles;_StreamDeckPublishDirName;_SDPluginFolder">
+<!--<Project>-->
+
+  <PropertyGroup>
+    <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' == 'Core' ">dotnet "$(MSBuildThisFileDirectory)sdsdkbuildtool.dll"</_BuildAssembly>
+    <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' != 'Core' ">"$(MSBuildThisFileDirectory)sdsdkbuildtool.exe"</_BuildAssembly>
+    <_DistributionTool>$(MSBuildThisFileDirectory)DistributionTool.exe</_DistributionTool>
+    <_StreamDeckPublishDirName>$(MSBuildProjectName.ToLower()).sdPlugin</_StreamDeckPublishDirName>
+    <_SDPluginFolder>$(APPDATA)\Elgato\StreamDeck\Plugins\$(_StreamDeckPublishDirName)</_SDPluginFolder>
+  </PropertyGroup>
+  
+  <Target Name="GenerateStreamDeckManifest" DependsOnTargets="Build" AfterTargets="Build" Condition=" '$(RuntimeIdentifier)' == '' ">
+    <Exec Command='$(_BuildAssembly) "$(TargetPath)"' />
+  </Target>
+
+  <Target Name="ClientStreamDeckManifest" AfterTargets="Clean">
+    <Delete Files="$(OutDir)\manifest.json" />
+    <RemoveDir Directories="$(_SDPluginFolder)" />
+  </Target>
+
+  <Target Name="CopyOutputToSDPluginFolder" DependsOnTargets="Build" AfterTargets="GenerateStreamDeckManifest" Condition=" '$(BuildToSDPluginFolder)' == true ">
+    <ItemGroup>
+      <_OutputFiles Include="$(OutDir)\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(_OutputFiles)" DestinationFiles="$(_SDPluginFolder)\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Message Importance="high" Text="Copied to -> $(_SDPluginFolder)" />
+  </Target>
+
+  <Target Name="StreamDeckPublish" AfterTargets="Publish">
+    <PropertyGroup>
+      <StreamDeckPublishOutput>$(BaseOutputPath)$(Configuration)\$(TargetFramework)\publish</StreamDeckPublishOutput>
+      <StreamDeckPublishDir>$(StreamDeckPublishOutput)\$(_StreamDeckPublishDirName)</StreamDeckPublishDir>
+    </PropertyGroup>
+    <ItemGroup>
+      <PublishedFiles Include="$(PublishDir)\**\*" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PublishedFiles)" DestinationFiles="$(StreamDeckPublishDir)\%(RecursiveDir)%(Filename)%(Extension)" />
+    <Copy SourceFiles="$(OutDir)..\manifest.json" DestinationFiles="$(StreamDeckPublishDir)\manifest.json" />
+    <Exec Command='"$(_DistributionTool)" -b -i "$(StreamDeckPublishDirName)"' WorkingDirectory='$(StreamDeckPublishOutput)' />
+  </Target>
+
+</Project>
