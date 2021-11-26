@@ -18,6 +18,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Build
+      env:
+        COPY_TO_SD: false
       shell: pwsh
       run: |
         .\build.ps1
