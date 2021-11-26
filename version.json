@@ -3,5 +3,21 @@
   "version": "1.0-prerelease+{height}",
   "nugetPackageVersion": {
     "semVer": 2
+  },
+  "publicReleaseRefSpec": [
+    "^refs/heads/main$",
+    "^refs/tags/v\\d+\\.\\d+"
+  ],
+  "cloudBuild": {
+    "setVersionVariables": true,
+    "buildNumber": {
+      "enabled": true,
+      "includeCommitId": {
+        "where": "fourthVersionComponent"
+      }
+    }
+  },
+  "release": {
+    "versionIncrement": "minor"
   }
 }
