@@ -10,19 +10,18 @@
     <GenerateFullPaths Condition="'$(VSCODE_PID)' != ''">true</GenerateFullPaths>
   </PropertyGroup>
   <PropertyGroup>
-    <GitRepository>parithon/sdsdk</GitRepository>
-    <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
-    <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
-  </PropertyGroup>
-  <PropertyGroup>
+    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Debug' ">true</GeneratePackageOnBuild>
+    <PackageOwners>Anthony Conrad</PackageOwners>
     <PackageOutputPath>$(MSBuildThisFileDirectory)nupkgs</PackageOutputPath>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <GitRepository>parithon/sdsdk</GitRepository>
+    <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
     <PackageProjectUrl>https://github.com/$(GitRepository)</PackageProjectUrl>
     <PackageIconUrl>$(PackageProjectUrl)/images/icon.png</PackageIconUrl>
     <PackageIcon>icon.png</PackageIcon>
-    <GeneratePackageOnBuild Condition=" '$(Configuration)' == 'Debug' ">true</GeneratePackageOnBuild>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>$(PackageProjectUrl).git</RepositoryUrl>
   </PropertyGroup>
   <PropertyGroup>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
