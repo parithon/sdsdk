@@ -7,6 +7,7 @@ namespace TestConsole
   {
     static void Main(string[] args)
     {
+      dynamic me = new { };
       var client = new StreamDeckClientBuilder(args, waitForDebugger: false)
         .Build();
 

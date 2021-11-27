@@ -5,18 +5,15 @@ using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Parithon.StreamDeck.SDK
 {
-  public class StreamDeckClientBuilder : IServiceCollection
+  public class StreamDeckClientBuilder
   {
     private readonly IConfiguration configuration;
     private readonly Dictionary<string, Type> registeredActions;
     internal readonly IServiceCollection Services;
-
-    public int Count => this.Services.Count;
-
-    public bool IsReadOnly => this.Services.IsReadOnly;
 
     public ServiceDescriptor this[int index] { get => this.Services[index]; set => this.Services[index] = value; }
 
@@ -71,25 +68,44 @@ namespace Parithon.StreamDeck.SDK
         .BuildServiceProvider()
         .GetRequiredService<StreamDeckClient>();
     }
+  }
 
-    public int IndexOf(ServiceDescriptor item) => this.Services.IndexOf(item);
+  public static class StreamDeckClientBuilderExtensions
+  {
+    public static StreamDeckClientBuilder AddSingleton<TService>(this StreamDeckClientBuilder builder) where TService : class
+    {
+      builder.Services.AddSingleton<TService>();
+      return builder;
+    }
 
-    public void Insert(int index, ServiceDescriptor item) => this.Services.Insert(index, item);
+    public static StreamDeckClientBuilder AddSingleton<TService>(this StreamDeckClientBuilder builder, TService implementationInstance) where TService : class
+    {
+      builder.Services.AddSingleton(implementationInstance);
+      return builder;
+    }
 
-    public void RemoveAt(int index) => this.Services.RemoveAt(index);
+    public static StreamDeckClientBuilder AddTransient<TService>(this StreamDeckClientBuilder builder) where TService : class
+    {
+      builder.Services.AddTransient<TService>();
+      return builder;
+    }
 
-    public void Add(ServiceDescriptor item) => this.Services.Add(item);
+    public static StreamDeckClientBuilder AddTransient<TService>(this StreamDeckClientBuilder builder, TService implementationInstance) where TService : class
+    {
+      builder.AddTransient(implementationInstance);
+      return builder;
+    }
 
-    public void Clear() => this.Services.Clear();
+    public static StreamDeckClientBuilder AddScoped<TService>(this StreamDeckClientBuilder builder) where TService : class
+    {
+      builder.AddScoped<TService>();
+      return builder;
+    }
 
-    public bool Contains(ServiceDescriptor item) => this.Services.Contains(item);
-
-    public void CopyTo(ServiceDescriptor[] array, int arrayIndex) => this.Services.CopyTo(array, arrayIndex);
-
-    public bool Remove(ServiceDescriptor item) => this.Services.Remove(item);
-
-    public IEnumerator<ServiceDescriptor> GetEnumerator() => this.Services.GetEnumerator();
-
-    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this.Services.GetEnumerator();
+    public static StreamDeckClientBuilder AddScoped<TService>(this StreamDeckClientBuilder builder, TService implementationInstance) where TService : class
+    {
+      builder.AddScoped(implementationInstance);
+      return builder;
+    }
   }
 }
