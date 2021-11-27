@@ -14,7 +14,12 @@ internal class Manifest
       this.Actions.Add(action);
     }
     var os = GetOS(assembly.GetCustomAttributes<AssemblyStreamDeckOSAttribute>());
-    var versionStr = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0";    ;
+    var versionStr = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0";
+    var versionStrRegex = @"(?<version>(?:\d+\.?)*)[-+]";
+    if (System.Text.RegularExpressions.Regex.IsMatch(versionStr, versionStrRegex))
+    {
+      versionStr = System.Text.RegularExpressions.Regex.Match(versionStr, versionStrRegex).Groups["version"].Value;
+    }
     var version = new Version(versionStr);
     this.Author = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
     this.Category = streamDeckAttribute?.Category;
