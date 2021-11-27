@@ -3,11 +3,18 @@ using Parithon.StreamDeck.SDK;
 
 namespace TestConsole
 {
+  public class FakeObject
+  {
+    public FakeObject()
+    {
+    }
+  }
+
   internal class Program
   {
     static void Main(string[] args)
     {
-      object me = new { };
+      FakeObject me = new FakeObject();
       var client = new StreamDeckClientBuilder(args, waitForDebugger: false)
         .AddSingleton(me)
         .Build();

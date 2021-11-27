@@ -10,9 +10,9 @@ namespace TestConsole.Actions
 {
   public class TestToggleAction : StreamDeckAction
   {
-    private readonly object me;
+    private readonly FakeObject me;
 
-    public TestToggleAction(object me)
+    public TestToggleAction(FakeObject me)
     {
       this.me = me;
       this.States.Add(new StreamDeckActionState { Image = "Images/virt_cam_off" });
