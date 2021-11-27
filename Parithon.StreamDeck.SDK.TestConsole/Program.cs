@@ -7,8 +7,9 @@ namespace TestConsole
   {
     static void Main(string[] args)
     {
-      dynamic me = new { };
+      object me = new { };
       var client = new StreamDeckClientBuilder(args, waitForDebugger: false)
+        .AddSingleton(me)
         .Build();
 
       client.Connected += (s, e) => Console.WriteLine("Connected to StreamDeck");

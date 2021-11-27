@@ -9,9 +9,12 @@ using Parithon.StreamDeck.SDK.Messages;
 namespace TestConsole.Actions
 {
   public class TestToggleAction : StreamDeckAction
-  { 
-    public TestToggleAction()
+  {
+    private readonly object me;
+
+    public TestToggleAction(object me)
     {
+      this.me = me;
       this.States.Add(new StreamDeckActionState { Image = "Images/virt_cam_off" });
       this.States.Add(new StreamDeckActionState { Image = "Images/virt_cam_on" });
     }

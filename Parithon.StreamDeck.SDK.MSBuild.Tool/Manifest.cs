@@ -5,12 +5,27 @@ internal class Manifest
 {
   public Manifest(Assembly assembly)
   {
+    System.Diagnostics.Debugger.Launch();
     var streamDeckAttribute = assembly.GetCustomAttribute<AssemblyStreamDeckAttribute>();
     var types = assembly.GetTypes().Where(t => t.IsClass && t.IsSubclassOf(typeof(StreamDeckAction)));
     this.Actions = new List<dynamic>();
     foreach (var type in types)
     {
-      var action = Activator.CreateInstance(type);
+      object action = null;
+      if (type.GetConstructors().SingleOrDefault(c => c.GetParameters().Length == 0) == null)
+      {
+        var constparams = new List<object>();
+        var parameters = type.GetConstructors().SingleOrDefault().GetParameters();
+        foreach (var parameter in parameters)
+        {
+          constparams.Add(parameter.DefaultValue);
+        }
+        action = Activator.CreateInstance(type, constparams);
+      }
+      else
+      {
+        action = Activator.CreateInstance(type);
+      }
       this.Actions.Add(action);
     }
     var os = GetOS(assembly.GetCustomAttributes<AssemblyStreamDeckOSAttribute>());
