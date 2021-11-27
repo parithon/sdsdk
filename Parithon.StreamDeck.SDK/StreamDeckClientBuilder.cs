@@ -8,11 +8,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Parithon.StreamDeck.SDK
 {
-  public class StreamDeckClientBuilder
+  public class StreamDeckClientBuilder : IServiceCollection
   {
     private readonly IConfiguration configuration;
     private readonly Dictionary<string, Type> registeredActions;
     internal readonly IServiceCollection Services;
+
+    public int Count => this.Services.Count;
+
+    public bool IsReadOnly => this.Services.IsReadOnly;
+
+    public ServiceDescriptor this[int index] { get => this.Services[index]; set => this.Services[index] = value; }
 
     public StreamDeckClientBuilder(string[] args, bool? waitForDebugger = false)
     {
@@ -65,5 +71,25 @@ namespace Parithon.StreamDeck.SDK
         .BuildServiceProvider()
         .GetRequiredService<StreamDeckClient>();
     }
+
+    public int IndexOf(ServiceDescriptor item) => this.Services.IndexOf(item);
+
+    public void Insert(int index, ServiceDescriptor item) => this.Services.Insert(index, item);
+
+    public void RemoveAt(int index) => this.Services.RemoveAt(index);
+
+    public void Add(ServiceDescriptor item) => this.Services.Add(item);
+
+    public void Clear() => this.Services.Clear();
+
+    public bool Contains(ServiceDescriptor item) => this.Services.Contains(item);
+
+    public void CopyTo(ServiceDescriptor[] array, int arrayIndex) => this.Services.CopyTo(array, arrayIndex);
+
+    public bool Remove(ServiceDescriptor item) => this.Services.Remove(item);
+
+    public IEnumerator<ServiceDescriptor> GetEnumerator() => this.Services.GetEnumerator();
+
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => this.Services.GetEnumerator();
   }
 }
