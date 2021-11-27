@@ -5,7 +5,6 @@ internal class Manifest
 {
   public Manifest(Assembly assembly)
   {
-    System.Diagnostics.Debugger.Launch();
     var streamDeckAttribute = assembly.GetCustomAttribute<AssemblyStreamDeckAttribute>();
     var types = assembly.GetTypes().Where(t => t.IsClass && t.IsSubclassOf(typeof(StreamDeckAction)));
     this.Actions = new List<dynamic>();
