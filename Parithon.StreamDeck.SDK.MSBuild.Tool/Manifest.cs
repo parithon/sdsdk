@@ -53,7 +53,15 @@ internal class Manifest
     {
       MinimumVersion = "4.1"
     };
-    this.ApplicationsToMonitor = null;
+    var applicationsToMonitor = assembly.GetCustomAttributes<AssemblyStreamDeckApplicationToMonitorAttribute>();
+    if (applicationsToMonitor.Any())
+    {
+      this.ApplicationsToMonitor = new List<string>();
+      foreach (var apps in applicationsToMonitor)
+      {
+        this.ApplicationsToMonitor.Add(apps.Name);
+      }
+    }
   }
 
   private static IEnumerable<dynamic> GetOS(IEnumerable<AssemblyStreamDeckOSAttribute> osattribs)

@@ -57,6 +57,8 @@ namespace Parithon.StreamDeck.SDK
     public event EventHandler<WillDisappearEvent> WillDisappear;
     #endregion // StreamDeck events
 
+    public string UUID => this._uuid;
+
     public void Execute()
     {
       if (client == null)
