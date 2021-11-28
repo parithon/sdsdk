@@ -3,6 +3,9 @@
     "StreamDeck-Integration": {
       "commandName": "Executable",
       "executablePath": "$(ProgramFiles)\\Elgato\\StreamDeck\\StreamDeck.exe"
+    },
+    "TestConsole": {
+      "commandName": "Project"
     }
   }
 }

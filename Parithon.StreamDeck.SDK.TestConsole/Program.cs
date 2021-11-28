@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using Parithon.StreamDeck.SDK;
+using TestConsole.Actions;
 
 namespace TestConsole
 {

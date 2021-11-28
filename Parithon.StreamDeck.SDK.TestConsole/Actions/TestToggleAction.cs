@@ -8,6 +8,7 @@ using Parithon.StreamDeck.SDK.Messages;
 
 namespace TestConsole.Actions
 {
+  // [StreamDeckAction(icon: "Imates/virt_cam_on", name: "Test Action")]
   public class TestToggleAction : StreamDeckAction
   {
     private readonly FakeObject me;

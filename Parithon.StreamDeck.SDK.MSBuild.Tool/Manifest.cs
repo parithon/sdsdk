@@ -1,31 +1,28 @@
-﻿using System.Reflection;
+﻿using System.Linq.Expressions;
+using System.Reflection;
+using System.Reflection.Emit;
 using Parithon.StreamDeck.SDK;
+
+internal static class ReflectionExtension
+{
+  public static dynamic GetInstance(this Type type)
+  {
+    var ctor = type.GetConstructors().First();
+    var parameters = ctor.GetParameters().Select(p => p.ParameterType.GetInstance()).ToArray();
+    return ctor.Invoke(parameters);
+  }
+}
 
 internal class Manifest
 {
   public Manifest(Assembly assembly)
   {
-    System.Diagnostics.Debugger.Launch();
     var streamDeckAttribute = assembly.GetCustomAttribute<AssemblyStreamDeckAttribute>();
     var types = assembly.GetTypes().Where(t => t.IsClass && t.IsSubclassOf(typeof(StreamDeckAction)));
     this.Actions = new List<dynamic>();
     foreach (var type in types)
     {
-      object action = null;
-      if (type.GetConstructors().SingleOrDefault(c => c.GetParameters().Length == 0) == null)
-      {
-        var constparams = new List<object>();
-        var parameters = type.GetConstructors().SingleOrDefault().GetParameters();
-        foreach (var parameter in parameters)
-        {
-          constparams.Add(parameter.DefaultValue);
-        }
-        action = Activator.CreateInstance(type, constparams);
-      }
-      else
-      {
-        action = Activator.CreateInstance(type);
-      }
+      var action = type.GetInstance();
       this.Actions.Add(action);
     }
     var os = GetOS(assembly.GetCustomAttributes<AssemblyStreamDeckOSAttribute>());
