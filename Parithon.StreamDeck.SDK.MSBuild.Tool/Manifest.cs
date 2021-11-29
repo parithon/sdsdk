@@ -56,10 +56,16 @@ internal class Manifest
     var applicationsToMonitor = assembly.GetCustomAttributes<AssemblyStreamDeckApplicationToMonitorAttribute>();
     if (applicationsToMonitor.Any())
     {
-      this.ApplicationsToMonitor = new List<string>();
-      foreach (var apps in applicationsToMonitor)
+      this.ApplicationsToMonitor = new ApplicationsToMonitor();
+      var macApps = applicationsToMonitor.Where(a => a.OS == "mac");
+      var winApps = applicationsToMonitor.Where(a => a.OS == "windows");
+      if (macApps.Any())
       {
-        this.ApplicationsToMonitor.Add(apps.Name);
+        this.ApplicationsToMonitor.mac = new List<string>(macApps.Select(a => a.Name));
+      }
+      if (winApps.Any())
+      {
+        this.ApplicationsToMonitor.windows = new List<string>(winApps.Select(a => a.Name));
       }
     }
   }
@@ -95,5 +101,5 @@ internal class Manifest
   public short SDKVersion { get; private set; }
   public IEnumerable<dynamic> OS { get; private set; }
   public dynamic Software { get; private set; }
-  public ICollection<string> ApplicationsToMonitor { get; private set; }
+  public ApplicationsToMonitor ApplicationsToMonitor { get; private set; }
 }
