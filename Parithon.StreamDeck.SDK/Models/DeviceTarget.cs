@@ -6,14 +6,10 @@ using Newtonsoft.Json.Converters;
 
 namespace Parithon.StreamDeck.SDK.Models
 {
-  [JsonConverter(typeof(StringEnumConverter))]
   public enum DeviceTarget : short
   {
-    [JsonProperty("software")]
-    Software,
-    [JsonProperty("hardware")]
+    Both,
     Hardware,
-    [JsonProperty("both")]
-    Both
+    Software
   }
 }

@@ -145,6 +145,10 @@ namespace Parithon.StreamDeck.SDK
 
     private async Task SendAsync(string json)
     {
+#if DEBUG
+      System.Diagnostics.Debug.WriteLine("SendAsync", json);
+#endif
+
       if (this.client == null) return;
 
       try
