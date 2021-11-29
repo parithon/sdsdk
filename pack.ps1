@@ -1,3 +1,3 @@
-dotnet pack .\Parithon.StreamDeck.SDK.Core
-dotnet pack .\Parithon.StreamDeck.SDK.MSBuild
-dotnet pack .\Parithon.StreamDeck.SDK
+dotnet pack .\Parithon.StreamDeck.SDK.Core --no-restore --configuration Release
+dotnet pack .\Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release
+dotnet pack .\Parithon.StreamDeck.SDK --no-restore --configuration Release
