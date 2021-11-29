@@ -24,15 +24,15 @@ jobs:
       run: dotnet restore
     - name: Build
       run: |
-        dotnet build .\Parithon.StreamDeck.SDK.Core --no-restore --configuration Release --nologo
-        dotnet build .\Parithon.StreamDeck.SDK.MSBuild.Tool --no-restore --configuration Release --nologo
-        dotnet build .\Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release --nologo
-        dotnet build .\Parithon.StreamDeck.SDK --no-restore --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK.Core --no-restore --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --no-restore --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK --no-restore --configuration Release --nologo
     - name: Pack
       run: |
-        dotnet pack .\Parithon.StreamDeck.SDK.Core --no-restore --configuration Release
-        dotnet pack .\Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release
-        dotnet pack .\Parithon.StreamDeck.SDK --no-restore --configuration Release
+        dotnet pack ./Parithon.StreamDeck.SDK.Core --no-restore --configuration Release
+        dotnet pack ./Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release
+        dotnet pack ./Parithon.StreamDeck.SDK --no-restore --configuration Release
     - uses: actions/upload-artifact@v2
       with:
         name: corepkg
