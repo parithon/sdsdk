@@ -6,6 +6,7 @@
     <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' == 'Core' ">dotnet "$(MSBuildThisFileDirectory)sdsdkbuildtool.dll"</_BuildAssembly>
     <_BuildAssembly Condition=" '$(MSBuildRuntimeType)' != 'Core' ">"$(MSBuildThisFileDirectory)sdsdkbuildtool.exe"</_BuildAssembly>
     <_DistributionTool>$(MSBuildThisFileDirectory)DistributionTool.exe</_DistributionTool>
+    <_DistributionTool Condition=" '$(Platform)' != 'Win32' ">$(MSBuildThisFileDirectory)DistributionTool</_DistributionTool>
     <_StreamDeckPublishDirName>$(MSBuildProjectName.ToLower()).sdPlugin</_StreamDeckPublishDirName>
     <_SDPluginFolder>$(APPDATA)\Elgato\StreamDeck\Plugins\$(_StreamDeckPublishDirName)</_SDPluginFolder>
   </PropertyGroup>
