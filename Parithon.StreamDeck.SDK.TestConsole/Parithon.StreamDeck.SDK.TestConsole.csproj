@@ -5,7 +5,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <AssemblyName>TestConsole</AssemblyName>
-    <PublishTrimmed>true</PublishTrimmed>
+    <PublishTrimmed>false</PublishTrimmed>
     <Description>Please add a real description for this plugin!</Description>
     <DefineConstants>SDDEBUG</DefineConstants>
     <BuildToSDPluginFolder>false</BuildToSDPluginFolder>

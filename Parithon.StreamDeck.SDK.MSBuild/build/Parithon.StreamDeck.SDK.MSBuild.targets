@@ -37,7 +37,17 @@
     </ItemGroup>
     <Copy SourceFiles="@(PublishedFiles)" DestinationFiles="$(StreamDeckPublishDir)\%(RecursiveDir)%(Filename)%(Extension)" />
     <Copy SourceFiles="$(OutDir)..\manifest.json" DestinationFiles="$(StreamDeckPublishDir)\manifest.json" />
-    <Exec Command='"$(_DistributionTool)" -b -i "$(StreamDeckPublishDirName)"' WorkingDirectory='$(StreamDeckPublishOutput)' />
+  </Target>
+  
+  <Target Name="StreamDeckDistribution">
+    <PropertyGroup>
+      <StreamDeckPublishOutput>$(BaseOutputPath)$(Configuration)\$(TargetFramework)\publish</StreamDeckPublishOutput>
+    </PropertyGroup>
+    <ItemGroup>
+      <FilesToDelete Include="$(StreamDeckPublishOutput)\*.streamDeckPlugin" />
+    </ItemGroup>
+    <Delete Files="@(FilesToDelete)" />
+    <Exec Command="$(_DistributionTool) -b -i $(_StreamDeckPublishDirName) -o ." WorkingDirectory="$(StreamDeckPublishOutput)" />
   </Target>
 
 </Project>
