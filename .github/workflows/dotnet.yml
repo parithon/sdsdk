@@ -35,13 +35,21 @@ jobs:
         dotnet pack ./Parithon.StreamDeck.SDK.Core --no-restore --configuration Release
         dotnet pack ./Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release
         dotnet pack ./Parithon.StreamDeck.SDK --no-restore --configuration Release
-    - run: |
-        pwd
-        tree
-    - uses: actions/upload-artifact@v2
+    - name: Upload CORE package
+      uses: actions/upload-artifact@v2
       with:
         name: corepkg
         path: "./nupkgs/Parithon.StreamDeck.SDK.Core.${{ steps.version.outputs.version }}.nupkg"
+    - name: Upload MSBUILD package
+      uses: actions/upload-artifact@v2
+      with:
+        name: msbuildpkg
+        path: "./nupkgs/Parithon.StreamDeck.SDK.MSBuild.${{ steps.version.outputs.version }}.nupkg"
+    - name: Upload SDK package
+      uses: actions/upload-artifact@v2
+      with:
+        name: sdkpkg
+        path: "./nupkgs/Parithon.StreamDeck.SDK.${{ steps.version.outputs.version }}.nupkg"
         
     outputs:
       version: ${{ steps.version.outputs.version }}
