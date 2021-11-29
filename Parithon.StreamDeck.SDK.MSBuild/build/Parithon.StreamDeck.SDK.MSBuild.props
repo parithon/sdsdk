@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <PublishSingleFile>true</PublishSingleFile>
-    <PublishReadyToRun>true</PublishReadyToRun>
+    <PublishReadyToRun>false</PublishReadyToRun>
     <BuildToSDPluginFolder>true</BuildToSDPluginFolder>
   </PropertyGroup>
 
