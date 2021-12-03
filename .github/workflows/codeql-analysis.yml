@@ -77,7 +77,7 @@ jobs:
       run: echo "::set-output name=version::$(nbgv get-version -v SemVer2)"
 
     - name: Build Project
-      run: .\build.ps1
+      run: .\build.ps1 -Release
       shell: pwsh
 
     - name: Perform CodeQL Analysis
