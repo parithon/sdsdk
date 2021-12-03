@@ -8,7 +8,7 @@
     <PublishTrimmed>false</PublishTrimmed>
     <Description>Please add a real description for this plugin!</Description>
     <DefineConstants>SDDEBUG</DefineConstants>
-    <BuildToSDPluginFolder>false</BuildToSDPluginFolder>
+    <BuildToSDPluginFolder>true</BuildToSDPluginFolder>
   </PropertyGroup>
 
   <ItemGroup>

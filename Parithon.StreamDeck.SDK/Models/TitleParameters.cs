@@ -14,7 +14,7 @@ namespace Parithon.StreamDeck.SDK.Models
     public short FontSize { get; set; }
 
     [JsonProperty("fontStyle")]
-    public FontStyle FontStyle { get; set; }
+    public string FontStyle { get; set; }
 
     [JsonProperty("fontUnderline")]
     public bool FontUnderline { get; set; }

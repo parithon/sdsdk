@@ -16,6 +16,10 @@ namespace TestConsole
   {
     static void Main(string[] args)
     {
+#if DEBUG
+      System.Diagnostics.Debugger.Launch();
+#endif
+
       FakeObject me = new FakeObject();
       var client = new StreamDeckClientBuilder(args, waitForDebugger: false)
         .AddSingleton(me)

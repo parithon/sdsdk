@@ -13,7 +13,7 @@ namespace Parithon.StreamDeck.SDK
     public string TitleColor { get; set; }
     public Alignment? TitleAlignment { get; set; }
     public string FontFamily { get; set; }
-    public FontStyle? FontStyle { get; set; }
+    public string FontStyle { get; set; }
     public short? FontSize { get; set; }
     public bool? FontUnderline { get; set; }
   }
