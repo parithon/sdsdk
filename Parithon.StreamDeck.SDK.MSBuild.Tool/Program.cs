@@ -1,14 +1,14 @@
 ﻿using System.Reflection;
-using System.Text.Json;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 Assembly buildAssembly = Assembly.LoadFrom(args[0]);
 Manifest manifest = new Manifest(buildAssembly);
 
-string manifestJSON = JsonSerializer.Serialize(manifest, new JsonSerializerOptions()
+string manifestJSON = JsonConvert.SerializeObject(manifest, new JsonSerializerSettings()
 {
-  DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
-  WriteIndented = true
+  NullValueHandling = NullValueHandling.Ignore,
+  Formatting = Formatting.Indented
 });
 
 var targetPath = Path.GetDirectoryName(args[0]);

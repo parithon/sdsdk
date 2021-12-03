@@ -12,6 +12,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Parithon.StreamDeck.SDK" Version="*-*" />
     <PackageReference Include="Parithon.StreamDeck.SDK.MSBuild" Version="*-*" />
   </ItemGroup>
 

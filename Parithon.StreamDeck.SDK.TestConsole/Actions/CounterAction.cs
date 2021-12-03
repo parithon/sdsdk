@@ -17,7 +17,10 @@ namespace Parithon.StreamDeck.SDK.TestConsole.Actions
 
     public CounterAction()
     {
-      this.States.Add(new StreamDeckActionState() { Image = "Images/virt_cam_on" });
+      this.States.Add(new StreamDeckActionState() { 
+        Image = "Images/virt_cam_on",
+        TitleAlignment = Alignment.Bottom
+      });
       this.timmer = new(TimeSpan.FromSeconds(2).TotalMilliseconds);
       this.timmer.AutoReset = true;
       this.timmer.Elapsed += async (s, e) =>
