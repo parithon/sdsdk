@@ -1,0 +1,151 @@
+name: Development
+
+on:
+  push:
+    branches: [ dev ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Setup Nerdbank.GitVersioning
+      run: dotnet tool install -g nbgv
+    - name: Version
+      id: version
+      run: echo "::set-output name=version::$(nbgv get-version -v SemVer2)"
+    - name: Restore dependencies
+      run: dotnet restore
+    - name: Build
+      run: |
+        dotnet build ./Parithon.StreamDeck.SDK.Core --no-restore --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --no-restore --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK --no-restore --configuration Release --nologo
+    - name: Pack
+      run: |
+        dotnet pack ./Parithon.StreamDeck.SDK.Core --no-restore --configuration Release
+        dotnet pack ./Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release
+        dotnet pack ./Parithon.StreamDeck.SDK --no-restore --configuration Release
+    - name: Upload CORE package
+      uses: actions/upload-artifact@v2
+      with:
+        name: corepkg
+        path: "./nupkgs/Parithon.StreamDeck.SDK.Core.${{ steps.version.outputs.version }}.nupkg"
+    - name: Upload MSBUILD package
+      uses: actions/upload-artifact@v2
+      with:
+        name: msbuildpkg
+        path: "./nupkgs/Parithon.StreamDeck.SDK.MSBuild.${{ steps.version.outputs.version }}.nupkg"
+    - name: Upload SDK package
+      uses: actions/upload-artifact@v2
+      with:
+        name: sdkpkg
+        path: "./nupkgs/Parithon.StreamDeck.SDK.${{ steps.version.outputs.version }}.nupkg"
+        
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+  release:
+  
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: corepkg
+    - uses: actions/download-artifact@v2
+      with:
+        name: msbuildpkg
+    - uses: actions/download-artifact@v2
+      with:
+        name: sdkpkg
+    - uses: actions/create-release@v1
+      id: create_release
+      with:
+        draft: false
+        prerelease: true
+        release_name: v${{ needs.build.outputs.version }}
+        tag_name: v${{ needs.build.outputs.version }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - uses: actions/upload-release-asset@v1
+      id: upload_corepkg_asset
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: "Parithon.StreamDeck.SDK.Core.${{ needs.build.outputs.version }}.nupkg"
+        asset_name: "Parithon.StreamDeck.SDK.Core.${{ needs.build.outputs.version }}.nupkg"
+        asset_content_type: "application/zip"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - uses: actions/upload-release-asset@v1
+      id: upload_msbuildpkg_asset
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: "Parithon.StreamDeck.SDK.MSBuild.${{ needs.build.outputs.version }}.nupkg"
+        asset_name: "Parithon.StreamDeck.SDK.MSBuild.${{ needs.build.outputs.version }}.nupkg"
+        asset_content_type: "application/zip"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    - uses: actions/upload-release-asset@v1
+      id: upload_sdkpkg_asset
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: "Parithon.StreamDeck.SDK.${{ needs.build.outputs.version }}.nupkg"
+        asset_name: "Parithon.StreamDeck.SDK.${{ needs.build.outputs.version }}.nupkg"
+        asset_content_type: "application/zip"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    
+  nuget:
+    
+    needs: [ build ]
+    runs-on: ubuntu-latest
+      
+    steps:
+    - uses: actions/download-artifact@v2
+      with:
+        name: corepkg
+    - uses: actions/download-artifact@v2
+      with:
+        name: msbuildpkg
+    - uses: actions/download-artifact@v2
+      with:
+        name: sdkpkg
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    - name: Publish NuGet packages
+      run: dotnet nuget push *.nupkg --api-key $NUGETKEY --source https://api.nuget.org/v3/index.json
+      env:
+        NUGETKEY: ${{ secrets.NUGETKEY }}
+    
+  cleanup:
+  
+    needs: [ build, release, nuget ]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    
+    steps:    
+    - uses: GeekyEggo/delete-artifact@v1.0.0
+      with:
+        name: corepkg
+        failOnError: false
+    - uses: GeekyEggo/delete-artifact@v1.0.0
+      with:
+        name: msbuildpkg
+        failOnError: false
+    - uses: GeekyEggo/delete-artifact@v1.0.0
+      with:
+        name: sdkpkg
+        failOnError: false
