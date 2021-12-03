@@ -7,6 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
+		CHANGE.md = CHANGE.md
 		Directory.Build.props = Directory.Build.props
 		LICENSE = LICENSE
 		nuget.config = nuget.config
@@ -34,6 +35,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github.Actions", "Github.Actions", "{FB006B4B-FB74-4B9B-9FE6-29262C9B6872}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\development.yml = .github\workflows\development.yml
 		.github\workflows\releases.yml = .github\workflows\releases.yml
 	EndProjectSection
 EndProject
