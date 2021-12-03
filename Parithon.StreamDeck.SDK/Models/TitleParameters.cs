@@ -14,7 +14,7 @@ namespace Parithon.StreamDeck.SDK.Models
     public short FontSize { get; set; }
 
     [JsonProperty("fontStyle")]
-    public string FontStyle { get; set; }
+    public FontStyle FontStyle { get; set; }
 
     [JsonProperty("fontUnderline")]
     public bool FontUnderline { get; set; }
@@ -23,7 +23,7 @@ namespace Parithon.StreamDeck.SDK.Models
     public bool ShowTitle { get; set; }
 
     [JsonProperty("titleAlignment")]
-    public string TitleAlignment { get; set; }
+    public Alignment TitleAlignment { get; set; }
 
     [JsonProperty("titleColor")]
     public string TitleColor { get; set; }
