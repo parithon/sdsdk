@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Parithon.StreamDeck.SDK
+namespace Parithon.StreamDeck.SDK.Models
 {
   public class ApplicationsToMonitor
   {

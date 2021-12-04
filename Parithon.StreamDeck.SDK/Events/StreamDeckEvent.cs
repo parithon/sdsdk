@@ -18,6 +18,7 @@ namespace Parithon.StreamDeck.SDK.Events
     internal const string DeviceDidDisconnect = "deviceDidDisconnect";
     internal const string ApplicationDidLaunch = "applicationDidLaunch";
     internal const string ApplicationDidTerminate = "applicationDidTerminate";
+    internal const string SendToPlugin = "sendToPlugin";
     #endregion
 
     #region Send Events

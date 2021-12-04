@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Parithon.StreamDeck.SDK;
 using Parithon.StreamDeck.SDK.Messages;
+using Parithon.StreamDeck.SDK.Models;
 
 namespace TestConsole.Actions
 {

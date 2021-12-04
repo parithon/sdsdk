@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Parithon.StreamDeck.SDK.Messages;
 using Parithon.StreamDeck.SDK.Models;
 
 namespace Parithon.StreamDeck.SDK
@@ -35,6 +36,8 @@ namespace Parithon.StreamDeck.SDK
     public virtual void Initialize(AppearPayload payload) { }
 
     public virtual Func<IMessage, Task> SendAsync { get; set; }
+
+    public virtual void SendToPlugin(dynamic payload) { }
 
     public virtual void SetTitle(string title)
     {

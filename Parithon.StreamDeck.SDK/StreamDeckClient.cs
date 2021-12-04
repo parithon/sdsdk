@@ -55,6 +55,7 @@ namespace Parithon.StreamDeck.SDK
     public event EventHandler<TitleParametersDidChangeEvent> TitleParametersDidChange;
     public event EventHandler<WillAppearEvent> WillAppear;
     public event EventHandler<WillDisappearEvent> WillDisappear;
+    public event EventHandler<SendToPluginEvent> SendToPlugin;
     #endregion // StreamDeck events
 
     public string UUID => this._uuid;
@@ -255,11 +256,22 @@ namespace Parithon.StreamDeck.SDK
               UnregisterAction(disappearevt.Context);
               WillDisappear?.Invoke(this, disappearevt);
               break;
+            case StreamDeckEvent.SendToPlugin:
+              var sendtopluginevt = data as SendToPluginEvent;
+              SendToPluginAction(sendtopluginevt.Context, sendtopluginevt.Payload);
+              SendToPlugin?.Invoke(this, sendtopluginevt);
+              break;
             default:
               break;
           }
         }
       }
+    }
+
+    private void SendToPluginAction(string context, dynamic payload)
+    {
+      if (!this._actions.TryGetValue($"{context}", out StreamDeckAction action)) return;
+      action.SendToPlugin(payload);
     }
 
     private void KeyDownAction(string context, KeyPayload payload)

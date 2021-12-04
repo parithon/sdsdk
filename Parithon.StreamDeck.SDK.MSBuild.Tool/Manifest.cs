@@ -2,6 +2,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 using Parithon.StreamDeck.SDK;
+using Parithon.StreamDeck.SDK.Models;
 
 internal static class ReflectionExtension
 {
