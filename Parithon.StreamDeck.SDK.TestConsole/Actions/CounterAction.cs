@@ -52,6 +52,16 @@ namespace Parithon.StreamDeck.SDK.TestConsole.Actions
 
     public override string Name => "Counter";
 
+    public override string PropertyInspectorPath => "PI/CounterAction.html";
+
+    public override void SendToPlugin(dynamic payload)
+    {
+#if DEBUG
+      System.Diagnostics.Debug.WriteLine($"SendToPlugin: {payload}");
+      System.Diagnostics.Debug.WriteLine($"command: {payload.command}");
+#endif
+    }
+
     public override void OnKeyDown(KeyPayload payload)
     {
       timmer.Start();
