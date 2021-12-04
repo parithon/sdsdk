@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Parithon.StreamDeck.SDK.Models;
 
 namespace Parithon.StreamDeck.SDK
 {
