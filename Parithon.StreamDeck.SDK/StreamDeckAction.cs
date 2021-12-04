@@ -37,6 +37,8 @@ namespace Parithon.StreamDeck.SDK
 
     public virtual Func<IMessage, Task> SendAsync { get; set; }
 
+    public virtual void SendToPlugin(dynamic payload) { }
+
     public virtual void SetTitle(string title)
     {
       this.Title = title;
