@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Parithon.StreamDeck.SDK.Events;
 using Parithon.StreamDeck.SDK.Messages;
 using Parithon.StreamDeck.SDK.Models;

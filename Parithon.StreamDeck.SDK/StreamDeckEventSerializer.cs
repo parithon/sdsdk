@@ -42,6 +42,8 @@ namespace Parithon.StreamDeck.SDK
           return jo.ToObject<WillAppearEvent>();
         case StreamDeckEvent.WillDisappear:
           return jo.ToObject<WillDisappearEvent>();
+        case StreamDeckEvent.SendToPlugin:
+          return jo.ToObject<SendToPluginEvent>();
       }
 
       return null;
