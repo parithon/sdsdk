@@ -48,7 +48,10 @@ namespace Parithon.StreamDeck.SDK
       this.Title = title;
     }
 
-    protected abstract void Dispose(bool disposing);
+    protected virtual void Dispose(bool disposing)
+    {
+      this.disposedValue = true;
+    }
 
     public void Dispose()
     {
