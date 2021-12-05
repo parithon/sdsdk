@@ -62,6 +62,14 @@ namespace Parithon.StreamDeck.SDK.TestConsole.Actions
 #endif
     }
 
+    public override void PropertyInspector(bool isVisible)
+    {
+#if DEBUG
+      System.Diagnostics.Debug.WriteLine($"PropertyInspector: {isVisible}");
+#endif
+      base.PropertyInspector(isVisible);
+    }
+
     public override void OnKeyDown(KeyPayload payload)
     {
       timmer.Start();
