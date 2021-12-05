@@ -11,7 +11,7 @@ namespace Parithon.StreamDeck.SDK.Events
     public string Action { get; private set; }
 
     [JsonProperty("event")]
-    public override string Event => StreamDeckEvent.SendToPlugin;
+    public override string Event => SendToPlugin;
 
     [JsonProperty("Context")]
     public string Context { get; private set; }

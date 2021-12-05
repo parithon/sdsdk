@@ -39,6 +39,8 @@ namespace Parithon.StreamDeck.SDK
 
     public virtual void SendToPlugin(dynamic payload) { }
 
+    public virtual void PropertyInspector(bool isVisible) { }
+
     public virtual void SetTitle(string title)
     {
       this.Title = title;

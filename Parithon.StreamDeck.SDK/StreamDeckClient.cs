@@ -55,6 +55,9 @@ namespace Parithon.StreamDeck.SDK
     public event EventHandler<WillAppearEvent> WillAppear;
     public event EventHandler<WillDisappearEvent> WillDisappear;
     public event EventHandler<SendToPluginEvent> SendToPlugin;
+    public event EventHandler<EventArgs> PropertyInspectorDidAppear;
+    public event EventHandler<EventArgs> PropertyInspectorDidDisappear;
+    public event EventHandler<EventArgs> SystemDidWakeUp;
     #endregion // StreamDeck events
 
     public string UUID => this._uuid;
@@ -260,11 +263,27 @@ namespace Parithon.StreamDeck.SDK
               SendToPluginAction(sendtopluginevt.Context, sendtopluginevt.Payload);
               SendToPlugin?.Invoke(this, sendtopluginevt);
               break;
+            case StreamDeckEvent.PropertyInspectorDidAppear:
+              var piappearevt = data as PropertyInspectorAppearEvent;
+              SendPIEventToAction(piappearevt.Context, true);
+              break;
+            case StreamDeckEvent.PropertyInspectorDidDisappear:
+              var pidisappearevt = data as PropertyInspectorDisappearEvent;
+              SendPIEventToAction(pidisappearevt.Context, false);
+              break;
+            case StreamDeckEvent.SystemDidWakeUp:
+              break;
             default:
               break;
           }
         }
       }
+    }
+
+    private void SendPIEventToAction(string context, bool isVisible)
+    {
+      if (!this._actions.TryGetValue($"{context}", out StreamDeckAction action)) return;
+      action.PropertyInspector(isVisible);
     }
 
     private void SendToPluginAction(string context, dynamic payload)

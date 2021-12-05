@@ -19,6 +19,9 @@ namespace Parithon.StreamDeck.SDK.Events
     internal const string ApplicationDidLaunch = "applicationDidLaunch";
     internal const string ApplicationDidTerminate = "applicationDidTerminate";
     internal const string SendToPlugin = "sendToPlugin";
+    internal const string PropertyInspectorDidAppear = "propertyInspectorDidAppear";
+    internal const string PropertyInspectorDidDisappear = "propertyInspectorDidDisappear";
+    internal const string SystemDidWakeUp = "systemDidWakUp";
     #endregion
 
     #region Send Events
