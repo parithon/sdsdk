@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace Parithon.StreamDeck.SDK.Messages
 {
-  internal class ShowAlertMessage : IMessage
+  public class ShowAlertMessage : IMessage
   {
     public ShowAlertMessage(string context)
     {
