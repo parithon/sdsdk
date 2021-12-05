@@ -318,7 +318,8 @@ namespace Parithon.StreamDeck.SDK
     private void UnregisterAction(string context)
     {
       var key = $"{context}";
-      if (!this._actions.ContainsKey(key)) return;
+      if (!this._actions.TryGetValue(key, out StreamDeckAction action)) return;
+      action.Dispose();
       this._actions.Remove(key);
       GC.Collect();
     }

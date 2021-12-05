@@ -7,8 +7,10 @@ using Parithon.StreamDeck.SDK.Models;
 
 namespace Parithon.StreamDeck.SDK
 {
-  public abstract class StreamDeckAction
+  public abstract class StreamDeckAction : IDisposable
   {
+    private bool disposedValue;
+
     public abstract string Icon { get; }
 
     public abstract string Name { get; }
@@ -44,6 +46,15 @@ namespace Parithon.StreamDeck.SDK
     public virtual void SetTitle(string title)
     {
       this.Title = title;
+    }
+
+    protected abstract void Dispose(bool disposing);
+
+    public void Dispose()
+    {
+      // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+      Dispose(disposing: true);
+      GC.SuppressFinalize(this);
     }
   }
 }
