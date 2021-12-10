@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Parithon.StreamDeck.SDK.Abstracts;
 
 namespace Parithon.StreamDeck.SDK.Events
 {

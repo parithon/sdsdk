@@ -24,7 +24,7 @@ namespace Parithon.StreamDeck.SDK
 
     public virtual string Tooltip { get; }
 
-    public string UUID => GetType().FullName;
+    public string UUID => GetType().FullName.ToLowerInvariant();
 
     public virtual bool? VisibleInActionsList { get; }
 
@@ -49,7 +49,10 @@ namespace Parithon.StreamDeck.SDK
 
     protected virtual void Dispose(bool disposing)
     {
-      this.disposedValue = true;
+      if (!disposedValue)
+      {
+        disposedValue = true;
+      }
     }
 
     public void Dispose()
