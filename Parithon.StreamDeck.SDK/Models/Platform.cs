@@ -6,7 +6,7 @@ namespace Parithon.StreamDeck.SDK.Models
   [JsonConverter(typeof(StringEnumConverter))]
   public enum Platform
   {
-    Mac,
-    Windows
+    mac,
+    windows
   }
 }

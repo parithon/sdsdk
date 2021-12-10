@@ -3,11 +3,11 @@ using Parithon.StreamDeck.SDK;
 using Parithon.StreamDeck.SDK.Models;
 
 [assembly: StreamDeckManifest(Icon = "Images/virt_cam_on", Category = "Testing")]
-[assembly: StreamDeckOS(Platform = Platform.Windows, MinimumVersion = "10")]
-[assembly: StreamDeckOS(Platform = Platform.Mac, MinimumVersion = "10.11")]
-[assembly: StreamDeckApplicationToMonitor(Name = "obs", OS = Platform.Mac)]
-[assembly: StreamDeckApplicationToMonitor(Name = "obs.exe", OS = Platform.Windows)]
-[assembly: StreamDeckApplicationToMonitor(Name = "obs64.exe", OS = Platform.Windows)]
+[assembly: StreamDeckOS(Platform = Platform.windows, MinimumVersion = "10")]
+[assembly: StreamDeckOS(Platform = Platform.mac, MinimumVersion = "10.11")]
+[assembly: StreamDeckApplicationToMonitor(Name = "obs", OS = Platform.mac)]
+[assembly: StreamDeckApplicationToMonitor(Name = "obs.exe", OS = Platform.windows)]
+[assembly: StreamDeckApplicationToMonitor(Name = "obs64.exe", OS = Platform.windows)]
 
 namespace Dev.Parithon.StreamDeck.TestConsole
 {

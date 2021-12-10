@@ -4,11 +4,11 @@ using Parithon.StreamDeck.SDK.Models;
 
 internal static class ReflectionExtension
 {
-  public static dynamic GetInstance(this Type type)
+  public static StreamDeckAction GetInstance(this Type type)
   {
     var ctor = type.GetConstructors().First();
     var parameters = ctor.GetParameters().Select(p => p.ParameterType.GetInstance()).ToArray();
-    return ctor.Invoke(parameters);
+    return ctor.Invoke(parameters) as StreamDeckAction;
   }
 }
 
@@ -18,7 +18,7 @@ internal class Manifest
   {
     var streamDeckAttribute = assembly.GetCustomAttribute<StreamDeckManifestAttribute>();
     var types = assembly.GetTypes().Where(t => t.IsClass && t.IsSubclassOf(typeof(StreamDeckAction)));
-    this.Actions = new List<dynamic>();
+    this.Actions = new List<StreamDeckAction>();
     foreach (var type in types)
     {
       var action = type.GetInstance();
@@ -35,8 +35,17 @@ internal class Manifest
     this.Author = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
     this.Category = streamDeckAttribute?.Category;
     this.CategoryIcon = streamDeckAttribute?.CategoryIcon ?? streamDeckAttribute?.Icon;
-    this.CodePath = os.SingleOrDefault(o => o.Platform == Platform.Mac) != null ? $"{assembly.GetName().Name}" : $"{assembly.GetName().Name}.exe";
-    this.CodePathMac = streamDeckAttribute?.CodePathMac ?? (os.Count() > 1 && os.Any(o => o.Platform == Platform.Mac) ? $"{assembly.GetName().Name}" : null);
+    try
+    {
+      _ = os.Single(o => o.Platform == Platform.mac);
+      this.CodePath = $"{assembly.GetName().Name}";
+    }
+    catch
+    {
+      this.CodePath = $"{assembly.GetName().Name}.exe";
+    }
+    this.CodePath = os.Count() == 1 && os.SingleOrDefault(o => o.Platform == Platform.mac) != null ? $"{assembly.GetName().Name}" : $"{assembly.GetName().Name}.exe";
+    this.CodePathMac = streamDeckAttribute?.CodePathMac ?? (os.Count() > 1 && os.Any(o => o.Platform == Platform.mac) ? $"{assembly.GetName().Name}" : null);
     this.CodePathWin = streamDeckAttribute?.CodePathWin;
     this.Description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description ?? throw new ArgumentNullException("AssemblyDescription", "An assembly description is required for the manifest.");
     this.Icon = streamDeckAttribute?.Icon;
@@ -56,8 +65,8 @@ internal class Manifest
     if (applicationsToMonitor.Any())
     {
       this.ApplicationsToMonitor = new ApplicationsToMonitor();
-      var macApps = applicationsToMonitor.Where(a => a.OS == Platform.Mac);
-      var winApps = applicationsToMonitor.Where(a => a.OS == Platform.Windows);
+      var macApps = applicationsToMonitor.Where(a => a.OS == Platform.mac);
+      var winApps = applicationsToMonitor.Where(a => a.OS == Platform.windows);
       if (macApps.Any())
       {
         this.ApplicationsToMonitor.mac = new List<string>(macApps.Select(a => a.Name));
@@ -75,8 +84,8 @@ internal class Manifest
     if (!osattribs.Any())
     {
       platforms.AddRange(new [] {
-        new { Platform = Platform.Windows, MinimumVersion = "10" },
-        new { Platform = Platform.Mac, MinimumVersion = "10.11" }
+        new { Platform = Platform.windows, MinimumVersion = "10" },
+        new { Platform = Platform.mac, MinimumVersion = "10.11" }
       });
     }
     foreach (var osattrib in osattribs)
@@ -86,7 +95,7 @@ internal class Manifest
     return platforms;
   }
 
-  public ICollection<dynamic> Actions { get; private set; }
+  public ICollection<StreamDeckAction> Actions { get; private set; }
   public string Author { get; private set; }
   public string Category { get; private set; }
   public string CategoryIcon { get; private set; }
