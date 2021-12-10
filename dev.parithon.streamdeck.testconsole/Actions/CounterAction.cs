@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using Parithon.StreamDeck.SDK;
 using Parithon.StreamDeck.SDK.Messages;
 using Parithon.StreamDeck.SDK.Models;
 
-namespace Parithon.StreamDeck.SDK.TestConsole.Actions
+namespace Dev.Parithon.StreamDeck.TestConsole.Actions
 {
   public class CounterAction : StreamDeckAction
   {
@@ -17,15 +18,16 @@ namespace Parithon.StreamDeck.SDK.TestConsole.Actions
 
     public CounterAction()
     {
-      this.States.Add(new StreamDeckActionState() { 
+      States.Add(new StreamDeckActionState()
+      {
         Image = "Images/virt_cam_on",
         TitleAlignment = Alignment.Bottom
       });
-      this.timmer = new(TimeSpan.FromSeconds(2).TotalMilliseconds);
-      this.timmer.AutoReset = true;
-      this.timmer.Elapsed += async (s, e) =>
+      timmer = new(TimeSpan.FromSeconds(2).TotalMilliseconds);
+      timmer.AutoReset = true;
+      timmer.Elapsed += async (s, e) =>
       {
-        this.timmer.Stop();
+        timmer.Stop();
         counter = 0;
         await SetTitle();
       };
@@ -44,10 +46,10 @@ namespace Parithon.StreamDeck.SDK.TestConsole.Actions
 
     private async Task SetTitle()
     {
-        await this.SendAsync(new SetSettingsMessage(this.Context, new { Counter = counter }));
-        await this.SendAsync(new SetTitleMessage(this.Context, $"{counter}"));
+      await SendAsync(new SetSettingsMessage(Context, new { Counter = counter }));
+      await SendAsync(new SetTitleMessage(Context, $"{counter}"));
     }
-    
+
     public override string Icon => "Images/virt_cam_on";
 
     public override string Name => "Counter";

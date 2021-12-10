@@ -1,11 +1,12 @@
 ﻿using System;
+using Parithon.StreamDeck.SDK.Models;
 
 namespace Parithon.StreamDeck.SDK
 {
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true, Inherited = false)]
-  public sealed class AssemblyStreamDeckApplicationToMonitorAttribute : Attribute
+  public sealed class StreamDeckApplicationToMonitorAttribute : Attribute
   {
-    public string OS { get; set; }
+    public Platform OS { get; set; }
     public string Name { get; set; }
   }
 }

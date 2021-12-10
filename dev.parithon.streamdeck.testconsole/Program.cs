@@ -1,9 +1,15 @@
 ﻿using System;
-using System.Linq;
 using Parithon.StreamDeck.SDK;
-using TestConsole.Actions;
+using Parithon.StreamDeck.SDK.Models;
 
-namespace TestConsole
+[assembly: StreamDeckManifest(Icon = "Images/virt_cam_on", Category = "Testing")]
+[assembly: StreamDeckOS(Platform = Platform.Windows, MinimumVersion = "10")]
+[assembly: StreamDeckOS(Platform = Platform.Mac, MinimumVersion = "10.11")]
+[assembly: StreamDeckApplicationToMonitor(Name = "obs", OS = Platform.Mac)]
+[assembly: StreamDeckApplicationToMonitor(Name = "obs.exe", OS = Platform.Windows)]
+[assembly: StreamDeckApplicationToMonitor(Name = "obs64.exe", OS = Platform.Windows)]
+
+namespace Dev.Parithon.StreamDeck.TestConsole
 {
   public class FakeObject
   {
@@ -20,7 +26,7 @@ namespace TestConsole
       System.Diagnostics.Debugger.Launch();
 #endif
 
-      FakeObject me = new FakeObject();
+      var me = new FakeObject();
       var client = new StreamDeckClientBuilder(args, waitForDebugger: false)
         .AddSingleton(me)
         .Build();

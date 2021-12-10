@@ -1,6 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Reflection;
-using System.Reflection.Emit;
+﻿using System.Reflection;
 using Parithon.StreamDeck.SDK;
 using Parithon.StreamDeck.SDK.Models;
 
@@ -18,7 +16,7 @@ internal class Manifest
 {
   public Manifest(Assembly assembly)
   {
-    var streamDeckAttribute = assembly.GetCustomAttribute<AssemblyStreamDeckAttribute>();
+    var streamDeckAttribute = assembly.GetCustomAttribute<StreamDeckManifestAttribute>();
     var types = assembly.GetTypes().Where(t => t.IsClass && t.IsSubclassOf(typeof(StreamDeckAction)));
     this.Actions = new List<dynamic>();
     foreach (var type in types)
@@ -26,7 +24,7 @@ internal class Manifest
       var action = type.GetInstance();
       this.Actions.Add(action);
     }
-    var os = GetOS(assembly.GetCustomAttributes<AssemblyStreamDeckOSAttribute>());
+    var os = GetOS(assembly.GetCustomAttributes<StreamDeckOSAttribute>());
     var versionStr = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.0";
     var versionStrRegex = @"(?<version>(?:\d+\.?)*)[-+]";
     if (System.Text.RegularExpressions.Regex.IsMatch(versionStr, versionStrRegex))
@@ -37,8 +35,8 @@ internal class Manifest
     this.Author = assembly.GetCustomAttribute<AssemblyCompanyAttribute>()?.Company;
     this.Category = streamDeckAttribute?.Category;
     this.CategoryIcon = streamDeckAttribute?.CategoryIcon ?? streamDeckAttribute?.Icon;
-    this.CodePath = $"{assembly.GetName().Name}.exe";
-    this.CodePathMac = streamDeckAttribute?.CodePathMac ?? (os.Any(o => o.Platform == "mac") ? $"{assembly.GetName().Name}" : null);
+    this.CodePath = os.SingleOrDefault(o => o.Platform == Platform.Mac) != null ? $"{assembly.GetName().Name}" : $"{assembly.GetName().Name}.exe";
+    this.CodePathMac = streamDeckAttribute?.CodePathMac ?? (os.Count() > 1 && os.Any(o => o.Platform == Platform.Mac) ? $"{assembly.GetName().Name}" : null);
     this.CodePathWin = streamDeckAttribute?.CodePathWin;
     this.Description = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>()?.Description ?? throw new ArgumentNullException("AssemblyDescription", "An assembly description is required for the manifest.");
     this.Icon = streamDeckAttribute?.Icon;
@@ -54,12 +52,12 @@ internal class Manifest
     {
       MinimumVersion = "4.1"
     };
-    var applicationsToMonitor = assembly.GetCustomAttributes<AssemblyStreamDeckApplicationToMonitorAttribute>();
+    var applicationsToMonitor = assembly.GetCustomAttributes<StreamDeckApplicationToMonitorAttribute>();
     if (applicationsToMonitor.Any())
     {
       this.ApplicationsToMonitor = new ApplicationsToMonitor();
-      var macApps = applicationsToMonitor.Where(a => a.OS == "mac");
-      var winApps = applicationsToMonitor.Where(a => a.OS == "windows");
+      var macApps = applicationsToMonitor.Where(a => a.OS == Platform.Mac);
+      var winApps = applicationsToMonitor.Where(a => a.OS == Platform.Windows);
       if (macApps.Any())
       {
         this.ApplicationsToMonitor.mac = new List<string>(macApps.Select(a => a.Name));
@@ -71,17 +69,21 @@ internal class Manifest
     }
   }
 
-  private static IEnumerable<dynamic> GetOS(IEnumerable<AssemblyStreamDeckOSAttribute> osattribs)
+  private static IEnumerable<dynamic> GetOS(IEnumerable<StreamDeckOSAttribute> osattribs)
   {
+    List<dynamic> platforms = new();
     if (!osattribs.Any())
     {
-      yield return new { Platform = "windows", MinimumVersion = "10" };
-      yield break;
+      platforms.AddRange(new [] {
+        new { Platform = Platform.Windows, MinimumVersion = "10" },
+        new { Platform = Platform.Mac, MinimumVersion = "10.11" }
+      });
     }
     foreach (var osattrib in osattribs)
     {
-      yield return new { osattrib.Platform, osattrib.MinimumVersion };
+      platforms.Add(new { osattrib.Platform, osattrib.MinimumVersion });
     }
+    return platforms;
   }
 
   public ICollection<dynamic> Actions { get; private set; }

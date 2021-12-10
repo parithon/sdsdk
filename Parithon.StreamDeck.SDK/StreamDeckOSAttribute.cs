@@ -1,11 +1,12 @@
 ﻿using System;
+using Parithon.StreamDeck.SDK.Models;
 
 namespace Parithon.StreamDeck.SDK
 {
   [AttributeUsage(AttributeTargets.Assembly, Inherited = false, AllowMultiple = true)]
-  public sealed class AssemblyStreamDeckOSAttribute : Attribute
+  public sealed class StreamDeckOSAttribute : Attribute
   {
-    public string Platform { get; set; }
+    public Platform Platform { get; set; }
     public string MinimumVersion { get; set; }
   }
 }

@@ -24,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.MSB
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK", "Parithon.StreamDeck.SDK\Parithon.StreamDeck.SDK.csproj", "{54C7F5E3-78EE-476B-A7D9-25AFDA85D893}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parithon.StreamDeck.SDK.TestConsole", "Parithon.StreamDeck.SDK.TestConsole\Parithon.StreamDeck.SDK.TestConsole.csproj", "{C620F124-180C-4BB8-BE98-4A6EC4D92499}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dev.parithon.streamdeck.testconsole", "dev.parithon.streamdeck.testconsole\dev.parithon.streamdeck.testconsole.csproj", "{C620F124-180C-4BB8-BE98-4A6EC4D92499}"
 	ProjectSection(ProjectDependencies) = postProject
 		{7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B} = {7AC9470C-5CC3-4C97-ABE3-F8B6557BB41B}
 		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893} = {54C7F5E3-78EE-476B-A7D9-25AFDA85D893}
