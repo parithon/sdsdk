@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/dotnet/Nerdbank.GitVersioning/master/src/NerdBank.GitVersioning/version.schema.json",
-  "version": "0.2",
+  "version": "0.2-preview",
   "nugetPackageVersion": {
     "semVer": 2
   },
@@ -13,5 +13,8 @@
     "buildNumber": {
       "enabled": true
     }
+  },
+  "release": {
+    "firstUnstableTag": "preview"
   }
 }
