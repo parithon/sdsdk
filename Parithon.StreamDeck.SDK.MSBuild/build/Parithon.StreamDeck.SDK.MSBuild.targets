@@ -9,7 +9,10 @@
     <_DistributionTool Condition=" '$(Platform)' != 'Win32' ">$(MSBuildThisFileDirectory)DistributionTool</_DistributionTool>
     <_StreamDeckPublishDirName>$(MSBuildProjectName.ToLower()).sdPlugin</_StreamDeckPublishDirName>
     <_SDPluginFolder>$(APPDATA)\Elgato\StreamDeck\Plugins\$(_StreamDeckPublishDirName)</_SDPluginFolder>
+    <_MSBuildTool>$(MSBuildThisFileDirectory)../tools/netstandard2.0/sdsdkbuild.dll</_MSBuildTool>
   </PropertyGroup>
+
+  <UsingTask AssemblyFile="$(_MSBuildTool)" TaskName="CreateDistribution" />
   
   <Target Name="GenerateStreamDeckManifest" DependsOnTargets="Build" AfterTargets="Build" Condition=" '$(RuntimeIdentifier)' == '' ">
     <Exec Command='$(_BuildAssembly) "$(TargetPath)"' />
@@ -38,17 +41,26 @@
     </ItemGroup>
     <Copy SourceFiles="@(PublishedFiles)" DestinationFiles="$(StreamDeckPublishDir)\%(RecursiveDir)%(Filename)%(Extension)" />
     <Copy SourceFiles="$(OutDir)..\manifest.json" DestinationFiles="$(StreamDeckPublishDir)\manifest.json" />
+    <CreateDistribution PublishDir="$(MSBuildProjectDirectory)\$(StreamDeckPublishDir)">
+      <Output TaskParameter="DistributionReady" PropertyName="IsDistributionReady" />
+      <Output TaskParameter="NotReadyReason" PropertyName="DistributionNotReadyReason" />
+    </CreateDistribution>
   </Target>
   
-  <Target Name="StreamDeckDistribution">
+  <Target Name="StreamDeckDistribution" AfterTargets="StreamDeckPublish">
     <PropertyGroup>
       <StreamDeckPublishOutput>$(BaseOutputPath)$(Configuration)\$(TargetFramework)\publish</StreamDeckPublishOutput>
     </PropertyGroup>
     <ItemGroup>
       <FilesToDelete Include="$(StreamDeckPublishOutput)\*.streamDeckPlugin" />
     </ItemGroup>
-    <Delete Files="@(FilesToDelete)" />
-    <Exec Command="$(_DistributionTool) -b -i $(_StreamDeckPublishDirName) -o ." WorkingDirectory="$(StreamDeckPublishOutput)" />
+    
+    <Delete Files="@(FilesToDelete)" Condition=" $(IsDistributionReady) == True " />
+    <Exec Command="$(_DistributionTool) -b -i $(_StreamDeckPublishDirName) -o ." WorkingDirectory="$(StreamDeckPublishOutput)" Condition=" $(IsDistributionReady) == True " />
+    <Message Importance="high" Text="streamDeckPlugin distributable -> $(MSBuildProjectDirectory)\$(StreamDeckPublishOutput)" Condition=" $(IsDistributionReady) == True " />
+
+    <Warning Text="streamDeckPlugin distribution not generated" File="$(MSBuildThisFile)" Condition=" $(IsDistributionReady) == False " />
+    <Message Importance="high" Text="$(DistributionNotReadyReason)" Condition=" $(IsDistributionReady) == False " />
   </Target>
 
 </Project>

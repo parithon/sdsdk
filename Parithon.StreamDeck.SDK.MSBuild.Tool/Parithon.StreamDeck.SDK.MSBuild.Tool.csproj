@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Parithon.StreamDeck.SDK.Core\Parithon.StreamDeck.SDK.Core.csproj" />
+    <ProjectReference Include="..\Parithon.StreamDeck.SDK\Parithon.StreamDeck.SDK.csproj" />
   </ItemGroup>
 
 </Project>

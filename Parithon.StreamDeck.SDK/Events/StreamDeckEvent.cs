@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Parithon.StreamDeck.SDK.Abstracts;
 
 namespace Parithon.StreamDeck.SDK.Events
 {
@@ -18,6 +16,10 @@ namespace Parithon.StreamDeck.SDK.Events
     internal const string DeviceDidDisconnect = "deviceDidDisconnect";
     internal const string ApplicationDidLaunch = "applicationDidLaunch";
     internal const string ApplicationDidTerminate = "applicationDidTerminate";
+    internal const string SendToPlugin = "sendToPlugin";
+    internal const string PropertyInspectorDidAppear = "propertyInspectorDidAppear";
+    internal const string PropertyInspectorDidDisappear = "propertyInspectorDidDisappear";
+    internal const string SystemDidWakeUp = "systemDidWakUp";
     #endregion
 
     #region Send Events

@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Parithon.StreamDeck.SDK.Events;
 using Parithon.StreamDeck.SDK.Messages;
 using Parithon.StreamDeck.SDK.Models;
@@ -55,6 +54,10 @@ namespace Parithon.StreamDeck.SDK
     public event EventHandler<TitleParametersDidChangeEvent> TitleParametersDidChange;
     public event EventHandler<WillAppearEvent> WillAppear;
     public event EventHandler<WillDisappearEvent> WillDisappear;
+    public event EventHandler<SendToPluginEvent> SendToPlugin;
+    public event EventHandler<EventArgs> PropertyInspectorDidAppear;
+    public event EventHandler<EventArgs> PropertyInspectorDidDisappear;
+    public event EventHandler<EventArgs> SystemDidWakeUp;
     #endregion // StreamDeck events
 
     public string UUID => this._uuid;
@@ -255,11 +258,38 @@ namespace Parithon.StreamDeck.SDK
               UnregisterAction(disappearevt.Context);
               WillDisappear?.Invoke(this, disappearevt);
               break;
+            case StreamDeckEvent.SendToPlugin:
+              var sendtopluginevt = data as SendToPluginEvent;
+              SendToPluginAction(sendtopluginevt.Context, sendtopluginevt.Payload);
+              SendToPlugin?.Invoke(this, sendtopluginevt);
+              break;
+            case StreamDeckEvent.PropertyInspectorDidAppear:
+              var piappearevt = data as PropertyInspectorAppearEvent;
+              SendPIEventToAction(piappearevt.Context, true);
+              break;
+            case StreamDeckEvent.PropertyInspectorDidDisappear:
+              var pidisappearevt = data as PropertyInspectorDisappearEvent;
+              SendPIEventToAction(pidisappearevt.Context, false);
+              break;
+            case StreamDeckEvent.SystemDidWakeUp:
+              break;
             default:
               break;
           }
         }
       }
+    }
+
+    private void SendPIEventToAction(string context, bool isVisible)
+    {
+      if (!this._actions.TryGetValue($"{context}", out StreamDeckAction action)) return;
+      action.PropertyInspector(isVisible);
+    }
+
+    private void SendToPluginAction(string context, dynamic payload)
+    {
+      if (!this._actions.TryGetValue($"{context}", out StreamDeckAction action)) return;
+      action.SendToPlugin(payload);
     }
 
     private void KeyDownAction(string context, KeyPayload payload)
@@ -288,7 +318,8 @@ namespace Parithon.StreamDeck.SDK
     private void UnregisterAction(string context)
     {
       var key = $"{context}";
-      if (!this._actions.ContainsKey(key)) return;
+      if (!this._actions.TryGetValue(key, out StreamDeckAction action)) return;
+      action.Dispose();
       this._actions.Remove(key);
       GC.Collect();
     }

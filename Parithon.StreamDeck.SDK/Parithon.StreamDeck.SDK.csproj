@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <LangVersion>9</LangVersion>
+    <LangVersion>10</LangVersion>
     <AssemblyName>sdsdk</AssemblyName>
     <PackageId>$(MSBuildProjectName)</PackageId>
   </PropertyGroup>
@@ -21,10 +21,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Parithon.StreamDeck.SDK.Core\Parithon.StreamDeck.SDK.Core.csproj" />
   </ItemGroup>
 
 </Project>

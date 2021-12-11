@@ -26,20 +26,13 @@ jobs:
       run: dotnet restore
     - name: Build
       run: |
-        dotnet build ./Parithon.StreamDeck.SDK.Core --no-restore --configuration Release --nologo
         dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --no-restore --configuration Release --nologo
         dotnet build ./Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release --nologo
         dotnet build ./Parithon.StreamDeck.SDK --no-restore --configuration Release --nologo
     - name: Pack
       run: |
-        dotnet pack ./Parithon.StreamDeck.SDK.Core --no-restore --configuration Release
         dotnet pack ./Parithon.StreamDeck.SDK.MSBuild --no-restore --configuration Release
         dotnet pack ./Parithon.StreamDeck.SDK --no-restore --configuration Release
-    - name: Upload CORE package
-      uses: actions/upload-artifact@v2
-      with:
-        name: corepkg
-        path: "./nupkgs/Parithon.StreamDeck.SDK.Core.${{ steps.version.outputs.version }}.nupkg"
     - name: Upload MSBUILD package
       uses: actions/upload-artifact@v2
       with:
@@ -62,9 +55,6 @@ jobs:
     steps:
     - uses: actions/download-artifact@v2
       with:
-        name: corepkg
-    - uses: actions/download-artifact@v2
-      with:
         name: msbuildpkg
     - uses: actions/download-artifact@v2
       with:
@@ -76,15 +66,6 @@ jobs:
         prerelease: false
         release_name: v${{ needs.build.outputs.version }}
         tag_name: v${{ needs.build.outputs.version }}
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
-    - uses: actions/upload-release-asset@v1
-      id: upload_corepkg_asset
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: "Parithon.StreamDeck.SDK.Core.${{ needs.build.outputs.version }}.nupkg"
-        asset_name: "Parithon.StreamDeck.SDK.Core.${{ needs.build.outputs.version }}.nupkg"
-        asset_content_type: "application/zip"
       env:
         GITHUB_TOKEN: ${{ github.token }}
     - uses: actions/upload-release-asset@v1
@@ -114,9 +95,6 @@ jobs:
     steps:
     - uses: actions/download-artifact@v2
       with:
-        name: corepkg
-    - uses: actions/download-artifact@v2
-      with:
         name: msbuildpkg
     - uses: actions/download-artifact@v2
       with:
@@ -136,11 +114,7 @@ jobs:
     if: ${{ always() }}
     runs-on: ubuntu-latest
     
-    steps:    
-    - uses: GeekyEggo/delete-artifact@v1.0.0
-      with:
-        name: corepkg
-        failOnError: false
+    steps:
     - uses: GeekyEggo/delete-artifact@v1.0.0
       with:
         name: msbuildpkg

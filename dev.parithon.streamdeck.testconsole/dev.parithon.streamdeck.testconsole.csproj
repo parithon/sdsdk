@@ -21,18 +21,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckAttribute" Icon="Images/virt_cam_on" Category="Testing" />
-    <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckOSAttribute" Platform="windows" MinimumVersion="10" />
-    <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckOSAttribute" Platform="mac" MinimumVersion="10.11" />
-    <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckApplicationToMonitorAttribute" Name="obs" OS="mac" />
-    <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckApplicationToMonitorAttribute" Name="obs.exe" OS="windows" />
-    <AssemblyAttribute Include="Parithon.StreamDeck.SDK.AssemblyStreamDeckApplicationToMonitorAttribute" Name="obs64.exe" OS="windows" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Images\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="PI\**\*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="PI\css\" />
   </ItemGroup>
 
 </Project>

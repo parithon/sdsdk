@@ -42,6 +42,12 @@ namespace Parithon.StreamDeck.SDK
           return jo.ToObject<WillAppearEvent>();
         case StreamDeckEvent.WillDisappear:
           return jo.ToObject<WillDisappearEvent>();
+        case StreamDeckEvent.SendToPlugin:
+          return jo.ToObject<SendToPluginEvent>();
+        case StreamDeckEvent.PropertyInspectorDidAppear:
+          return jo.ToObject<PropertyInspectorAppearEvent>();
+        case StreamDeckEvent.PropertyInspectorDidDisappear:
+          return jo.ToObject<PropertyInspectorDisappearEvent>();
       }
 
       return null;

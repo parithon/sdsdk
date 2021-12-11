@@ -3,7 +3,7 @@
 namespace Parithon.StreamDeck.SDK
 {
   [AttributeUsage(AttributeTargets.Assembly, Inherited = false, AllowMultiple = false)]
-  public sealed class AssemblyStreamDeckAttribute : Attribute
+  public sealed class StreamDeckManifestAttribute : Attribute
   {
     public string Category { get; set; }
     public string CategoryIcon { get; set; }

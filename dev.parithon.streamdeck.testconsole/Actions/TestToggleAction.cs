@@ -5,8 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Parithon.StreamDeck.SDK;
 using Parithon.StreamDeck.SDK.Messages;
+using Parithon.StreamDeck.SDK.Models;
 
-namespace TestConsole.Actions
+namespace Dev.Parithon.StreamDeck.TestConsole.Actions
 {
   // [StreamDeckAction(icon: "Imates/virt_cam_on", name: "Test Action")]
   public class TestToggleAction : StreamDeckAction
@@ -16,8 +17,8 @@ namespace TestConsole.Actions
     public TestToggleAction(FakeObject me)
     {
       this.me = me;
-      this.States.Add(new StreamDeckActionState { Image = "Images/virt_cam_off" });
-      this.States.Add(new StreamDeckActionState { Image = "Images/virt_cam_on" });
+      States.Add(new StreamDeckActionState { Image = "Images/virt_cam_off" });
+      States.Add(new StreamDeckActionState { Image = "Images/virt_cam_on" });
     }
 
     public override string Icon => "Images/virt_cam_on";
