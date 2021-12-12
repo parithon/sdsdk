@@ -266,12 +266,15 @@ namespace Parithon.StreamDeck.SDK
             case StreamDeckEvent.PropertyInspectorDidAppear:
               var piappearevt = data as PropertyInspectorAppearEvent;
               SendPIEventToAction(piappearevt.Context, true);
+              PropertyInspectorDidAppear.Invoke(this, EventArgs.Empty);
               break;
             case StreamDeckEvent.PropertyInspectorDidDisappear:
               var pidisappearevt = data as PropertyInspectorDisappearEvent;
               SendPIEventToAction(pidisappearevt.Context, false);
+              PropertyInspectorDidDisappear?.Invoke(this, EventArgs.Empty);
               break;
             case StreamDeckEvent.SystemDidWakeUp:
+              SystemDidWakeUp?.Invoke(this, EventArgs.Empty);
               break;
             default:
               break;
