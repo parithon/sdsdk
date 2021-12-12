@@ -8,5 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Invalid Base Location
-      if: github.pull_request.base.ref == 'main'
       run: echo 1
