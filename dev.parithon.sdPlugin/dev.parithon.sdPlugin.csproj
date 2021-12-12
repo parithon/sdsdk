@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Parithon.StreamDeck.SDK" Version="0.5.5-preview.g24dabf4753" />
-    <PackageReference Include="Parithon.StreamDeck.SDK.MSBuild" Version="0.5.5-preview.g24dabf4753" />
+    <PackageReference Include="Parithon.StreamDeck.SDK" Version="0.5.6-preview" />
+    <PackageReference Include="Parithon.StreamDeck.SDK.MSBuild" Version="0.5.6-preview" />
   </ItemGroup>
 
   <ItemGroup>
