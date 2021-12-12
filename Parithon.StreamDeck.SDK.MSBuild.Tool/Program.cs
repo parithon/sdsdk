@@ -22,7 +22,8 @@ foreach (var action in manifest.Actions)
 
   for (int i = 0; i < action.States.Count; i++)
   {
-    var state = action.States.Skip(i).FirstOrDefault();
+    var states = action.States as IEnumerable<dynamic>;
+    var state = states.Skip(i).FirstOrDefault();
     if (state == null) break;
 
     var stateIconPath = Path.Combine(Path.GetDirectoryName(buildAssembly.Location), $"{state.Image}.png");
