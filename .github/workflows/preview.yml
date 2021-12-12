@@ -1,0 +1,57 @@
+name: Preview Release
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    name: Build + Package artifacts
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Setup GIT versioning
+      uses: dotnet/nbgv@v0.4.0
+      with:
+        setAllVars: true
+    
+    - name: Build projects
+      run: |
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK --configuration Release --nologo
+
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --configuration Release --nologo --runtime osx-x64 --no-self-contained
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild --configuration Release --nologo --runtime osx-x64 --no-self-contained
+        dotnet build ./Parithon.StreamDeck.SDK --configuration Release --nologo --runtime osx-x64 --no-self-contained
+
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --configuration Release --nologo --runtime win10-x86 --no-self-contained
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild --configuration Release --nologo --runtime win10-x86 --no-self-contained
+        dotnet build ./Parithon.StreamDeck.SDK --configuration Release --nologo --runtime win10-x86 --no-self-contained
+    
+    - name: Package NuGet artifacts
+      run: |
+        dotnet pack ./Parithon.StreamDeck.SDK.MSBuild --no-restore --no-build --nologo --configuration Release
+        dotnet pack ./Parithon.StreamDeck.SDK --no-restore --no-build --nologo --configuration Release
+      
+    - name: Upload MSBUILD artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkgs
+        path: "./nupkgs/Parithon.StreamDeck.SDK.MSBuild.${{ env.NBGV_CloudBuildNumber }}.nupkg"
+
+    - name: Upload SDK artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkgs
+        path: "./nupkgs/Parithon.StreamDeck.SDK.${{ env.NBGV_CloudBuildNumber }}.nupkg"
