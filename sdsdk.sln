@@ -30,12 +30,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "dev.parithon.streamdeck.tes
 		{54C7F5E3-78EE-476B-A7D9-25AFDA85D893} = {54C7F5E3-78EE-476B-A7D9-25AFDA85D893}
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Github.Actions", "Github.Actions", "{FB006B4B-FB74-4B9B-9FE6-29262C9B6872}"
-	ProjectSection(SolutionItems) = preProject
-		.github\workflows\development.yml = .github\workflows\development.yml
-		.github\workflows\releases.yml = .github\workflows\releases.yml
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
