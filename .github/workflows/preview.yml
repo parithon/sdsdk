@@ -8,6 +8,8 @@ jobs:
   build:
     name: Build + Package artifacts
     runs-on: windows-latest
+    outputs:
+      CloudBuildVersion: ${{ steps.versions.outputs.CloudBuildNumber }}
 
     steps:
     - name: Checkout repository
@@ -22,6 +24,7 @@ jobs:
 
     - name: Setup GIT versioning
       uses: dotnet/nbgv@v0.4.0
+      id: versions
       with:
         setAllVars: true
     
@@ -55,3 +58,79 @@ jobs:
       with:
         name: nupkgs
         path: "./nupkgs/Parithon.StreamDeck.SDK.${{ env.NBGV_CloudBuildNumber }}.nupkg"
+
+  create-preview-release:
+    name: Create Github Pre-Release
+    needs: [ build ]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: nupkgs
+
+    - name: Create Pre-Release
+      uses: actions/create-release@v1
+      id: create_release
+      with:
+        draft: false
+        prerelease: true
+        release_name: v${{ needs.build.outputs.CloudBuildVersion }}
+        tag_name: v${{ needs.build.outputs.CloudBuildVersion }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    
+    - name: Upload MSBUILD release asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: Parithon.StreamDeck.SDK.MSBuild.${{ needs.build.outputs.CloudBuildVersion }}.nupkg
+        asset_name: Parithon.STreamDeck.SDK.MSBuild.${{ needs.build.outputs.CloudBuildVersion }}.nupkg
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+    
+    - name: Upload SDK release asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: Parithon.StreamDeck.SDK.${{ needs.build.outputs.CloudBuildVersion }}.nupkg
+        asset_name: Parithon.STreamDeck.SDK.${{ needs.build.outputs.CloudBuildVersion }}.nupkg
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+  publish:
+    name: Publish Nuget Packages
+    needs: [ build ]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: nupkgs
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+      
+    - name: Publish NuGet Packages
+      run: dotnet nuget push *.nupkg --api-key $NUGETKEY --source https://api.nuget.org/v3/index.json
+      env:
+        NUGETKEY: ${{ secrets.NUGETKEY }}
+
+  cleanup:
+    name: Cleanup Action
+    needs: [ create-preview-release, publish ]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Delete Artifact from Action
+      uses: parithon/delete-artifact@v1.0.0
+      with:
+        name: nupkgs
+        failOnError: false
