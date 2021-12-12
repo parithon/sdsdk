@@ -141,6 +141,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Build Changelog
+      uses: parithon/release-changelog-builder-action@v2.7.1
+      id: build_changelog
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
     - name: Download artifacts
       uses: actions/download-artifact@v2
       with:
@@ -159,6 +165,7 @@ jobs:
         prerelease: true
         release_name: v${{ needs.get-version-info.outputs.CloudBuildVersion }}
         tag_name: v${{ needs.get-version-info.outputs.CloudBuildVersion }}
+        body: ${{ steps.build_changelog.outputs.changelog }}
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
@@ -170,6 +177,7 @@ jobs:
         prerelease: false
         release_name: v${{ needs.get-version-info.outputs.SimpleVersion }}
         tag_name: v${{ needs.get-version-info.outputs.SimpleVersion }}
+        body: ${{ steps.build_changelog.outputs.changelog }}
       env:
         GITHUB_TOKEN: ${{ github.token }}
 
