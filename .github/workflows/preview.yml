@@ -18,11 +18,11 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Build Changelog
-      uses: parithon/release-changelog-builder-action@v2.7.1
-      id: build_changelog
-      env:
-        GITHUB_TOKEN: ${{ github.token }}
+    # - name: Build Changelog
+    #   uses: parithon/release-changelog-builder-action@v2.7.1
+    #   id: build_changelog
+    #   env:
+    #     GITHUB_TOKEN: ${{ github.token }}
     
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
