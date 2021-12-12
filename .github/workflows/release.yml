@@ -1,0 +1,134 @@
+name: Release
+
+on:
+  milestone:
+    types: [ closed ]
+
+jobs:
+  get-version-info:
+    if: github.event.milestone
+    name: Gathering version information
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    - name: Setup GIT versioning
+      id: version
+      uses: dotnet/nbgv@v0.4.0
+      with:
+        setAllVars: true
+
+    outputs:
+      MajorMinorVersion: ${{ steps.version.outputs.MajorMinorVersion }}
+
+  prepare-release:
+    needs: [ get-version-info ]
+    if: github.event.milestone && github.event.milestone.title == 'v${{ needs.get-version-info.outputs.MajorMinorVersion }}'
+    name: Prepare new release
+    runs-on: ubuntu-latest
+    environment:
+      name: release
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        token: ${{ secrets.PAT_GITHUB }}
+        fetch-depth: 0
+    
+    - name: Import GPG key
+      id: import_gpg
+      uses: parithon/ghaction-import-gpg@v3
+      with:
+        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+        passphrase: ${{ secrets.GPG_KEY_PASSPHRASE }}
+    
+    - name: Setup CI GIT
+      run: |
+        git config user.name "${{ steps.import_gpg.outputs.name }}"
+        git config user.email "${{ steps.import_gpg.outputs.email }}"
+        git config --global user.signingKey ${{ steps.import_gpg.outputs.keyid }}
+        git config --global commit.gpgsign true
+    
+    - name: Setup GIT versioning
+      id: version
+      uses: dotnet/nbgv@v0.4.0
+      with:
+        setAllVars: true
+    
+    - name: Increment version.json on main + create release branch
+      id: versions
+      run: |
+        nbgv prepare-release
+        
+    - name: Sign commits on main and release branch
+      run: |
+        git checkout v$NBGV_MajorMinorVersion
+        git commit --amend -CHEAD
+        git checkout main
+        git reset --hard HEAD~1
+        git commit --amend -CHEAD
+        git merge -S -X ours v$NBGV_MajorMinorVersion
+    
+    - name: Push version.json updates to main
+      run: git push origin main
+
+    - name: Push release branch to origin
+      run: git push origin v$NBGV_MajorMinorVersion      
+  
+  build:
+    name: Build + Package artifacts
+    needs: [ get-version-info, prepare-release ]
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        ref: ${{ matrix.branch }}
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: Setup GIT versioning
+      id: version
+      uses: dotnet/nbgv@v0.4.0
+      with:
+        setAllVars: true
+
+    - name: Build projects
+      run: |
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild --configuration Release --nologo
+        dotnet build ./Parithon.StreamDeck.SDK --configuration Release --nologo
+
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --configuration Release --nologo --runtime osx-x64 --no-self-contained
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild --configuration Release --nologo --runtime osx-x64 --no-self-contained
+        dotnet build ./Parithon.StreamDeck.SDK --configuration Release --nologo --runtime osx-x64 --no-self-contained
+
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --configuration Release --nologo --runtime win10-x86 --no-self-contained
+        dotnet build ./Parithon.StreamDeck.SDK.MSBuild --configuration Release --nologo --runtime win10-x86 --no-self-contained
+        dotnet build ./Parithon.StreamDeck.SDK --configuration Release --nologo --runtime win10-x86 --no-self-contained
+    
+    - name: Package NuGet artifacts
+      run: |
+        dotnet pack ./Parithon.StreamDeck.SDK.MSBuild --no-restore --no-build --nologo --configuration Release
+        dotnet pack ./Parithon.StreamDeck.SDK --no-restore --no-build --nologo --configuration Release
+
+    - name: Upload MSBUILD artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkgs
+        path: "./nupkgs/Parithon.StreamDeck.SDK.MSBuild.${{ env.NBGV_CloudBuildNumber }}.nupkg"
+
+    - name: Upload SDK artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: nupkgs
+        path: "./nupkgs/Parithon.StreamDeck.SDK.${{ env.NBGV_CloudBuildNumber }}.nupkg"
