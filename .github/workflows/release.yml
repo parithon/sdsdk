@@ -22,7 +22,9 @@ jobs:
         setAllVars: true
 
     outputs:
+      CloudBuildVersion: ${{ steps.version.outputs.CloudBuildVersion }}
       MajorMinorVersion: ${{ steps.version.outputs.MajorMinorVersion }}
+      SimpleVersion: ${{ steps.version.outputs.SimpleVersion }}
 
   prepare-release:
     needs: [ get-version-info ]
@@ -95,7 +97,7 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    
+
     - name: Setup GIT versioning
       id: version
       uses: dotnet/nbgv@v0.4.0
@@ -115,7 +117,7 @@ jobs:
         dotnet build ./Parithon.StreamDeck.SDK.MSBuild.Tool --configuration Release --nologo --runtime win10-x86 --no-self-contained
         dotnet build ./Parithon.StreamDeck.SDK.MSBuild --configuration Release --nologo --runtime win10-x86 --no-self-contained
         dotnet build ./Parithon.StreamDeck.SDK --configuration Release --nologo --runtime win10-x86 --no-self-contained
-    
+
     - name: Package NuGet artifacts
       run: |
         dotnet pack ./Parithon.StreamDeck.SDK.MSBuild --no-restore --no-build --nologo --configuration Release
@@ -124,11 +126,128 @@ jobs:
     - name: Upload MSBUILD artifact
       uses: actions/upload-artifact@v2
       with:
-        name: nupkgs
+        name: nupkgs-${{ matrix.branch }}
         path: "./nupkgs/Parithon.StreamDeck.SDK.MSBuild.${{ env.NBGV_CloudBuildNumber }}.nupkg"
 
     - name: Upload SDK artifact
       uses: actions/upload-artifact@v2
       with:
-        name: nupkgs
+        name: nupkgs-${{ matrix.branch }}
         path: "./nupkgs/Parithon.StreamDeck.SDK.${{ env.NBGV_CloudBuildNumber }}.nupkg"
+
+  create-releases:
+    name: Create Github Releases
+    needs: [ build ]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: nupkgs-main
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: nupkgs-v${{ needs.get-version-info.outputs.SimpleVersion }}
+
+    - name: Create Github Pre-Release
+      uses: actions/create-release@v1
+      id: create_preview_release
+      with:
+        draft: false
+        prerelease: true
+        release_name: v${{ needs.get-version-info.outputs.CloudBuildVersion }}
+        tag_name: v${{ needs.get-version-info.outputs.CloudBuildVersion }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Create Github Release
+      uses: actions/create-release@v1
+      id: create_release
+      with:
+        draft: false
+        prerelease: false
+        release_name: v${{ needs.get-version-info.outputs.SimpleVersion }}
+        tag_name: v${{ needs.get-version-info.outputs.SimpleVersion }}
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Upload MSBUILD preview release asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_preview_release.outputs.upload_url }}
+        asset_path: Parithon.StreamDeck.SDK.MSBuild.${{ needs.get-version-info.outputs.CloudBuildVersion }}.nupkg
+        asset_name: Parithon.StreamDeck.SDK.MSBuild.${{ needs.get-version-info.outputs.CloudBuildVersion }}.nupkg
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Upload SDK preview release asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_preview_release.outputs.upload_url }}
+        asset_path: .StreamDeck.SDK.${{ needs.get-version-info.outputs.CloudBuildVersion }}.nupkg
+        asset_name: .StreamDeck.SDK.${{ needs.get-version-info.outputs.CloudBuildVersion }}.nupkg
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Upload MSBUILD release asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: Parithon.StreamDeck.SDK.MSBuild.${{ needs.get-version-info.outputs.SimpleVersion }}.nupkg
+        asset_name: Parithon.StreamDeck.SDK.MSBuild.${{ needs.get-version-info.outputs.SimpleVersion }}.nupkg
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+    - name: Upload SDK release asset
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: .StreamDeck.SDK.${{ needs.get-version-info.outputs.SimpleVersion }}.nupkg
+        asset_name: .StreamDeck.SDK.${{ needs.get-version-info.outputs.SimpleVersion }}.nupkg
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+
+  publish:
+    name: Publish Nuget Packages
+    needs: [ build ]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: nupkgs-main
+
+    - name: Download artifacts
+      uses: actions/download-artifact@v2
+      with:
+        name: nupkgs-v${{ needs.get-version-info.outputs.SimpleVersion }}
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+    
+    - name: Publish NuGet Packages
+      run: dotnet nuget push *.nupkg --api-key $NUGETKEY --source https://api.nuget.org/v3/index.json
+      env:
+        NUGETKEY: ${{ secrets.NUGETKEY }}
+
+  cleanup:
+    name: Cleanup Action
+    needs: [ create-releases, publish ]
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Delete Artifact from Action
+      uses: parithon/delete-artifact@v1.0.0
+      with:
+        name: nupkgs
+        failOnError: false
