@@ -4,11 +4,11 @@ using Parithon.StreamDeck.SDK.Models;
 
 internal static class ReflectionExtension
 {
-  public static StreamDeckAction GetInstance(this Type type)
+  public static dynamic GetInstance(this Type type)
   {
     var ctor = type.GetConstructors().First();
     var parameters = ctor.GetParameters().Select(p => p.ParameterType.GetInstance()).ToArray();
-    return ctor.Invoke(parameters) as StreamDeckAction;
+    return ctor.Invoke(parameters) as dynamic;
   }
 }
 
@@ -18,7 +18,7 @@ internal class Manifest
   {
     var streamDeckAttribute = assembly.GetCustomAttribute<StreamDeckManifestAttribute>();
     var types = assembly.GetTypes().Where(t => t.IsClass && t.IsSubclassOf(typeof(StreamDeckAction)));
-    this.Actions = new List<StreamDeckAction>();
+    this.Actions = new List<dynamic>();
     foreach (var type in types)
     {
       var action = type.GetInstance();
@@ -95,7 +95,7 @@ internal class Manifest
     return platforms;
   }
 
-  public ICollection<StreamDeckAction> Actions { get; private set; }
+  public ICollection<dynamic> Actions { get; private set; }
   public string Author { get; private set; }
   public string Category { get; private set; }
   public string CategoryIcon { get; private set; }
