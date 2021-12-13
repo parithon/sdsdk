@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace Parithon.StreamDeck.SDK
 {
@@ -105,6 +106,12 @@ namespace Parithon.StreamDeck.SDK
     public static StreamDeckClientBuilder AddScoped<TService>(this StreamDeckClientBuilder builder, TService implementationInstance) where TService : class
     {
       builder.AddScoped(implementationInstance);
+      return builder;
+    }
+
+    public static StreamDeckClientBuilder WithDebugger(this StreamDeckClientBuilder builder, bool closeStreamDeck = false)
+    {
+      System.Diagnostics.Debugger.Launch();
       return builder;
     }
   }
